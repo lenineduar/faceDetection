@@ -1,0 +1,349 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js' %}) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130582519-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-130582519-1');
+    </script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Face Detection</title>
+
+    <!-- vendor css -->
+    <link href="{% static 'azia_dashboard/lib/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/typicons.font/typicons.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
+
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="{% static 'azia_dashboard/css/azia.css' %}">
+
+  </head>
+  <body class="az-body">
+    <div class="az-iconbar az-iconbar-primary">
+      <a href="index.html" class="az-iconbar-logo"><i class="typcn typcn-chart-bar-outline"></i></a>
+      <nav class="nav">
+        <a href="#asideDashboard" class="nav-link active"><i class="typcn typcn-device-laptop"></i></a>
+        <a href="#asideAppsPages" class="nav-link"><i class="typcn typcn-calendar-outline"></i></a>
+        <a href="#asideUIElements" class="nav-link"><i class="typcn typcn-book"></i></a>
+        <a href="#asideForms" class="nav-link"><i class="typcn typcn-folder-add"></i></a>
+        <a href="#asideCharts" class="nav-link"><i class="typcn typcn-chart-line-outline"></i></a>
+        <a href="#asideMaps" class="nav-link"><i class="typcn typcn-map"></i></a>
+        <a href="#asideTables" class="nav-link"><i class="typcn typcn-th-large-outline"></i></a>
+        <a href="#asideUtil" class="nav-link"><i class="typcn typcn-archive"></i></a>
+      </nav>
+      <div class="az-iconbar-bottom">
+        <a href="" class="az-iconbar-help"><i class="far fa-question-circle"></i></a>
+        <a href="" class="az-img-user online"><img src="https://via.placeholder.com/500" alt=""></a>
+      </div><!-- az-iconbar-bottom -->
+    </div><!-- az-iconbar -->
+    <div class="az-iconbar-aside az-iconbar-aside-primary">
+      <div class="az-iconbar-header">
+        <a href="index.html" class="az-logo">azia</a>
+        <a href="" class="az-iconbar-toggle-menu">
+          <i class="icon ion-md-arrow-back"></i>
+
+          <i class="icon ion-md-close"></i>
+        </a>
+      </div><!-- az-iconbar-header -->
+      <div class="az-iconbar-body">
+        <div id="asideDashboard" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Dashboard</h6>
+          <small class="az-iconbar-text">Choose between layouts to experience different look and feel for your projects.</small>
+
+          <ul class="nav">
+            <li class="nav-item"><a href="dashboard-one.html" class="nav-link">Web Analytics</a></li>
+            <li class="nav-item"><a href="dashboard-two.html" class="nav-link">Sales Monitoring</a></li>
+            <li class="nav-item"><a href="dashboard-three.html" class="nav-link">Ad Campaign</a></li>
+            <li class="nav-item"><a href="dashboard-four.html" class="nav-link">Event Management</a></li>
+            <li class="nav-item"><a href="dashboard-five.html" class="nav-link">Helpdesk Management</a></li>
+            <li class="nav-item"><a href="dashboard-six.html" class="nav-link">Finance Monitoring</a></li>
+            <li class="nav-item"><a href="dashboard-seven.html" class="nav-link">Cryptocurrency</a></li>
+            <li class="nav-item"><a href="dashboard-eight.html" class="nav-link">Executive / SaaS</a></li>
+            <li class="nav-item"><a href="dashboard-nine.html" class="nav-link">Campaign Monitoring</a></li>
+            <li class="nav-item active"><a href="dashboard-ten.html" class="nav-link">Product Management</a></li>
+          </ul>
+        </div>
+        <div id="asideAppsPages" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Apps &amp; Pages</h6>
+          <small class="az-iconbar-text">Some pre-built web apps and pages for you to use in your project.</small>
+          <ul class="nav">
+            <li class="nav-item">
+              <a href="#" class="nav-link">Mailbox</a>
+            </li>
+            <li class="nav-item">
+              <a href="app-chat.html" class="nav-link">Chat</a>
+            </li>
+            <li class="nav-item">
+              <a href="app-calendar.html" class="nav-link">Calendar</a>
+            </li>
+            <li class="nav-item">
+              <a href="app-contacts.html" class="nav-link">Contacts</a>
+            </li>
+            <li class="nav-item"><a href="page-profile.html" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="page-invoice.html" class="nav-link">Invoice</a></li>
+            <li class="nav-item"><a href="page-signin.html" class="nav-link">Sign In</a></li>
+            <li class="nav-item"><a href="page-signup.html" class="nav-link">Sign Up</a></li>
+            <li class="nav-item"><a href="page-404.html" class="nav-link">Page 404</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideUIElements" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">UI Elements</h6>
+          <small class="az-iconbar-text">Reusable elements built to provide buttons, dropdowns, input, navigation, alerts, and much more</small>
+          <ul class="nav">
+            <li class="nav-item"><a href="elem-accordion.html" class="nav-link">Accordion</a></li>
+            <li class="nav-item"><a href="elem-alerts.html" class="nav-link">Alerts</a></li>
+            <li class="nav-item"><a href="elem-avatar.html" class="nav-link">Avatar</a></li>
+            <li class="nav-item"><a href="elem-badge.html" class="nav-link">Badge</a></li>
+            <li class="nav-item"><a href="elem-breadcrumbs.html" class="nav-link">Breadcrumbs</a></li>
+            <li class="nav-item"><a href="elem-buttons.html" class="nav-link">Buttons</a></li>
+            <li class="nav-item"><a href="elem-cards.html" class="nav-link">Cards</a></li>
+            <li class="nav-item"><a href="elem-carousel.html" class="nav-link">Carousel</a></li>
+            <li class="nav-item"><a href="elem-collapse.html" class="nav-link">Collapse</a></li>
+            <li class="nav-item"><a href="elem-dropdown.html" class="nav-link">Dropdown</a></li>
+            <li class="nav-item"><a href="elem-icons.html" class="nav-link">Icons</a></li>
+            <li class="nav-item"><a href="elem-images.html" class="nav-link">Images</a></li>
+            <li class="nav-item"><a href="elem-list-group.html" class="nav-link">List Group</a></li>
+            <li class="nav-item"><a href="elem-media-object.html" class="nav-link">Media Object</a></li>
+            <li class="nav-item"><a href="elem-modals.html" class="nav-link">Modals</a></li>
+            <li class="nav-item"><a href="elem-navigation.html" class="nav-link">Navigation</a></li>
+            <li class="nav-item"><a href="elem-pagination.html" class="nav-link">Pagination</a></li>
+            <li class="nav-item"><a href="elem-popover.html" class="nav-link">Popover</a></li>
+            <li class="nav-item"><a href="elem-progress.html" class="nav-link">Progress</a></li>
+            <li class="nav-item"><a href="elem-spinners.html" class="nav-link">Spinners</a></li>
+            <li class="nav-item"><a href="elem-toast.html" class="nav-link">Toast</a></li>
+            <li class="nav-item"><a href="elem-tooltip.html" class="nav-link">Tooltip</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideForms" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Forms</h6>
+          <small class="az-iconbar-text">Forms are used to collect user information with different element types of inputs.</small>
+
+          <ul class="nav">
+            <li class="nav-item"><a href="form-elements.html" class="nav-link">Form Elements</a></li>
+            <li class="nav-item"><a href="form-layouts.html" class="nav-link">Form Layouts</a></li>
+            <li class="nav-item"><a href="form-validation.html" class="nav-link">Form Validation</a></li>
+            <li class="nav-item"><a href="form-wizards.html" class="nav-link">Form Wizards</a></li>
+            <li class="nav-item"><a href="form-editor.html" class="nav-link">WYSIWYG Editor</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideCharts" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Charts</h6>
+          <small class="az-iconbar-text">A sheet of information in the form of a table, graph, or diagram.</small>
+          <ul class="nav">
+            <li class="nav-item"><a href="chart-morris.html" class="nav-link">Morris Charts</a></li>
+            <li class="nav-item"><a href="chart-flot.html" class="nav-link">Flot Charts</a></li>
+            <li class="nav-item"><a href="chart-chartjs.html" class="nav-link">ChartJS</a></li>
+            <li class="nav-item"><a href="chart-sparkline.html" class="nav-link">Sparkline</a></li>
+            <li class="nav-item"><a href="chart-peity.html" class="nav-link">Peity</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideMaps" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Maps</h6>
+          <small class="az-iconbar-text">An interactive display of geographic information that you can use for location and more.</small>
+          <ul class="nav">
+            <li class="nav-item"><a href="map-google.html" class="nav-link">Google Maps</a></li>
+            <li class="nav-item"><a href="map-leaflet.html" class="nav-link">Leaflet</a></li>
+            <li class="nav-item"><a href="map-vector.html" class="nav-link">Vector Maps</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideTables" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Tables</h6>
+          <small class="az-iconbar-text">A collection basic to advanced table design that you can use to your data.</small>
+          <ul class="nav">
+            <li class="nav-item"><a href="table-basic.html" class="nav-link">Basic Tables</a></li>
+            <li class="nav-item"><a href="table-data.html" class="nav-link">Data Tables</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+        <div id="asideUtil" class="az-iconbar-pane">
+          <h6 class="az-iconbar-title">Utilities</h6>
+          <small class="az-iconbar-text">A collection of helper classes as additional styles to an element.</small>
+          <ul class="nav">
+            <li class="nav-item"><a href="util-background.html" class="nav-link">Background</a></li>
+            <li class="nav-item"><a href="util-border.html" class="nav-link">Border</a></li>
+            <li class="nav-item"><a href="util-display.html" class="nav-link">Display</a></li>
+            <li class="nav-item"><a href="util-flex.html" class="nav-link">Flex</a></li>
+            <li class="nav-item"><a href="util-height.html" class="nav-link">Height</a></li>
+            <li class="nav-item"><a href="util-margin.html" class="nav-link">Margin</a></li>
+            <li class="nav-item"><a href="util-padding.html" class="nav-link">Padding</a></li>
+            <li class="nav-item"><a href="util-position.html" class="nav-link">Position</a></li>
+            <li class="nav-item"><a href="util-typography.html" class="nav-link">Typography</a></li>
+            <li class="nav-item"><a href="util-width.html" class="nav-link">Width</a></li>
+            <li class="nav-item"><a href="util-extras.html" class="nav-link">Extras</a></li>
+          </ul>
+        </div><!-- az-iconbar-pane -->
+      </div><!-- az-iconbar-body -->
+    </div><!-- az-iconbar-aside -->
+
+    <div class="az-content az-content-dashboard-ten">
+      <div class="az-header">
+        <div class="container-fluid">
+          <div class="az-header-left">
+            <a href="" id="azIconbarShow" class="az-header-menu-icon d-lg-none"><span></span></a>
+          </div><!-- az-header-left -->
+          <div class="az-header-center">
+            <h3>Face Detection</h3>
+          </div><!-- az-header-center -->
+          <div class="az-header-right">
+            <div class="dropdown az-header-notification">
+              <a href="" class="new"><i class="typcn typcn-bell"></i></a>
+              <div class="dropdown-menu">
+                <div class="az-dropdown-header mg-b-20 d-sm-none">
+                  <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                </div>
+                <h6 class="az-notification-title">Notifications</h6>
+                <p class="az-notification-text">You have 2 unread notification</p>
+                <div class="az-notification-list">
+                  <div class="media new">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+                    <div class="media-body">
+                      <p>Congratulate <strong>Socrates Itumay</strong> for work anniversaries</p>
+                      <span>Mar 15 12:32pm</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media new">
+                    <div class="az-img-user online"><img src="https://via.placeholder.com/500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Joyce Chua</strong> just created a new blog post</p>
+                      <span>Mar 13 04:16am</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Althea Cabardo</strong> just created a new blog post</p>
+                      <span>Mar 13 02:56am</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                  <div class="media">
+                    <div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+                    <div class="media-body">
+                      <p><strong>Adrian Monino</strong> added new comment on your photo</p>
+                      <span>Mar 12 10:40pm</span>
+                    </div><!-- media-body -->
+                  </div><!-- media -->
+                </div><!-- az-notification-list -->
+                <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+              </div><!-- dropdown-menu -->
+            </div><!-- az-header-notification -->
+            <div class="dropdown az-profile-menu">
+              <a href="" class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></a>
+              <div class="dropdown-menu">
+                <div class="az-dropdown-header d-sm-none">
+                  <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                </div>
+                <div class="az-header-profile">
+                  <div class="az-img-user">
+                    <img src="https://via.placeholder.com/500" alt="">
+                  </div><!-- az-img-user -->
+                  <h6>Aziana Pechon</h6>
+                  <span>Premium Member</span>
+                </div><!-- az-header-profile -->
+
+                <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> {% trans "My Profile" %}</a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-key-outline"></i> {%trans "Change Password" %}</a>
+                <a href="javascript:sign_out()" class="dropdown-item"><i class="typcn typcn-power-outline"></i> {% trans "Sign Out" %}</a>
+              </div><!-- dropdown-menu -->
+            </div>
+          </div><!-- az-header-right -->
+        </div><!-- container -->
+      </div><!-- az-header -->
+
+      {% block content %}
+      {% endblock content %}
+
+      <div class="az-footer ht-40">
+        <div class="container-fluid ht-100p pd-t-0-f">
+          <span>&copy; 2020 Face Detection</span>
+        </div><!-- container -->
+      </div><!-- az-footer -->
+    </div><!-- az-content -->
+
+    <form id="form-logout" method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+    </form>
+
+    <script src="{% static 'azia_dashboard/lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/ionicons/ionicons.js' %}"></script>
+
+    <script src="{% static 'azia_dashboard/js/azia.js' %}"></script>
+    <script src="{% static 'azia_dashboard/js/dashboard.sampledata.js' %}"></script>
+    <script type="text/javascript">
+      function sign_out(){
+        $("#form-logout").submit();
+      }
+    </script>
+    <script>
+
+      $(function(){
+        'use strict'
+
+        $('.az-iconbar .nav-link').on('click', function(e){
+          e.preventDefault();
+
+          $(this).addClass('active');
+          $(this).siblings().removeClass('active');
+
+          $('.az-iconbar-aside').addClass('show');
+
+          var targ = $(this).attr('href');
+          $(targ).addClass('show');
+          $(targ).siblings().removeClass('show');
+        });
+
+        $('.az-iconbar-body .with-sub').on('click', function(e){
+          e.preventDefault();
+          $(this).parent().addClass('show');
+          $(this).parent().siblings().removeClass('show');
+        });
+
+        $('.az-iconbar-toggle-menu').on('click', function(e){
+          e.preventDefault();
+
+          if(window.matchMedia('(min-width: 992px)').matches) {
+            $('.az-iconbar .nav-link.active').removeClass('active');
+            $('.az-iconbar-aside').removeClass('show');
+          } else {
+            $('body').removeClass('az-iconbar-show');
+          }
+        })
+
+        $('#azIconbarShow').on('click', function(e){
+          e.preventDefault();
+          $('body').toggleClass('az-iconbar-show');
+
+          var targ = $('.az-iconbar .nav-link.active').attr('href');
+          $(targ).addClass('show');
+        });
+
+        $(document).bind('click touchstart', function(e){
+          e.stopPropagation();
+
+          var azContent = $(e.target).closest('.az-content').length;
+          var azIconBarMenu = $(e.target).closest('.az-header-menu-icon').length;
+
+          if(azContent) {
+            $('.az-iconbar-aside').removeClass('show');
+
+            // for mobile
+            if(!azIconBarMenu) {
+              $('body').removeClass('az-iconbar-show');
+            }
+          }
+        })
+      });
+    </script>
+    {% block extra_js %}{% endblock extra_js %}
+  </body>
+</html>

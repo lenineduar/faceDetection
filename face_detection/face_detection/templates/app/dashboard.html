@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+        <div class="row row-sm">
+        	<div class="col-lg-12 pd-20 bg-white-9 mg-b-20">
+	            <nav class="nav az-nav-line flex-column flex-md-row">
+	            	<span class="nav-link"></span>
+	            	<a class="nav-link active" data-toggle="tab" href="javascript:void(0)" 
+		              @click="changeGrid(3)">
+		              	<i class="fas fa-grip-horizontal"></i>
+		            </a>
+	          
+	              	<a class="nav-link" data-toggle="tab" href="javascript:void(0)" 
+	              	@click="changeGrid(2)">
+	              		<i class="fas fa-th-large"></i>
+	              	</a>
+		            <a class="nav-link" data-toggle="tab" href="javascript:void(0)" 
+		              @click="changeGrid(1)">
+		            	<i class="fas fa-list"></i>
+		            </a>
+	            </nav>
+          	</div><!-- pd-10 -->
+        </div>
+		<!-- GRID 1 -->
+		<div v-show="grid_1" class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title">Cameras</h6>
+					<div class="table-responsive mg-t-20">
+						<table class="table table-striped table-dashboard-two mg-b-0">
+							<thead>
+								<tr>
+									<th class="wd-lg-25p">Camera</th>
+									<th class="wd-lg-25p tx-right">Status</th>
+									<th class="wd-lg-25p tx-right">Details</th>
+									<th class="wd-lg-25p tx-right">Show</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for camera in cameras %}
+								<tr>
+									<td>Camera {{ camera.id }}</td>
+									<td class="tx-right tx-medium tx-inverse">
+										{% if camera.camera %}
+										    <span class="badge badge-info">Active</span>
+										{% else %}
+										    <span class="badge badge-danger">No active</span>
+										{% endif %}	
+									</td>
+									<td class="tx-right tx-medium tx-inverse">Description</td>
+									<td class="tx-right tx-medium tx-danger">
+									    <a href="javascript:vois(0)" data-toggle="modal" data-target="#{{ camera.slug }}">
+									    	View
+									    </a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div><!-- table-responsive -->
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+
+
+        <!-- GRID 2 -->
+        <div v-show="grid_2">
+			<div class="row row-sm" >
+				{% for camera in cameras %}
+				<div class="col-lg-6 mg-b-20">
+					<div class="card card-dashboard-twentyfour">
+						<div class="card-header">
+							<h6 class="card-title">Camera {{ camera.id }}</h6>
+							<div class="chart-legend">
+								{% if camera.camera %}
+								    <div><span class="bg-teal"></span> Active</div>
+								{% else %}
+								    <div><span class="bg-danger"></span> No active</div>
+								{% endif %}
+							</div><!-- chart-legend -->
+						</div><!-- card-header -->
+						<div class="card-body">
+							<div class="pd-x-15 pb-3">
+								{% if camera.camera %}
+								    <img src="{% url camera.url_stream %}" height="230" width="100%">
+								{% else %}
+									<img src="{% static 'images/no_signal.jpg' %}" height="230" width="100%">
+							    {% endif %}
+							</div>
+						</div><!-- card-body -->
+					</div><!-- card -->
+				</div><!-- col -->
+				{% endfor %}
+			</div>
+		</div>
+        <!-- END GRID 2 -->
+
+
+		<!-- GRID 3 -->
+		<div v-show="grid_3">
+			<div class="row row-sm mg-b-20">
+				{% for camera in cameras %}
+				<div class="col-sm-6 col-lg-4 mg-b-20">
+					<div class="card card-dashboard-twentysix">
+						<div class="card-header">
+							<h6 class="card-title">Camera {{ camera.id }}</h6>
+							<div class="chart-legend">
+								{% if camera.camera %}
+								    <div><span class="bg-teal"></span> Active</div>
+								{% else %}
+								    <div><span class="bg-danger"></span> No active</div>
+								{% endif %}
+							</div><!-- chart-legend -->
+						</div><!-- card-header -->
+						<div class="card-body">
+							<div class="pd-x-15 pb-3">
+								{% if camera.camera %}
+								    <img src="{% url camera.url_stream %}" height="150" width="100%">
+								{% else %}
+									<img src="{% static 'images/no_signal.jpg' %}" height="150" width="100%">
+							    {% endif %}
+							</div>
+						</div><!-- card-body -->
+					</div><!-- card -->
+				</div><!-- col -->
+			    {% endfor %}
+			</div><!-- row -->
+		</div>
+		<!-- END GRID 3 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">Notifications</label>
+		<div class="az-media-list-reviews">
+			<div class="media">
+				<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+				<div class="media-body">
+					<div class="d-flex justify-content-between mg-b-10">
+						<div>
+							<h6 class="mg-b-0">Socrates Itumay</h6>
+							<div class="az-star-group">
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<span>4.1</span>
+							</div><!-- star-group -->
+						</div>
+						<small>1 hour ago</small>
+					</div>
+					<p class="mg-b-0">Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed amet...<a href="">Read more</a></p>
+				</div><!-- media-body -->
+			</div><!-- media -->
+			<div class="media">
+				<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+				<div class="media-body">
+					<div class="d-flex justify-content-between mg-b-10">
+						<div>
+							<h6 class="mg-b-0">Reynante Labares</h6>
+							<div class="az-star-group">
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
+								<span>4.5</span>
+							</div><!-- star-group -->
+						</div>
+						<small>2 days ago</small>
+					</div>
+					<p class="mg-b-0">Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed amet...<a href="">Read more</a></p>
+				</div><!-- media-body -->
+			</div><!-- media -->
+		</div><!-- media-list -->
+		<br/>
+		<a href="" class="btn btn-outline-light btn-block">View All Notifications</a>
+	</div>
+    <!-- END NOTIFICATIONS -->
+    {% include "app/modals/camera_modals.html" %}
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_js %}
+ <script src="https://vuejs.org/js/vue.min.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock extra_js %}
