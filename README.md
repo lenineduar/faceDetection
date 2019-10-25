@@ -97,3 +97,15 @@ Accedemos con el navegador a [IP]:8000, donde [IP] es la dirección ip de la má
 firefox http://localhost:8000/
 
 ```
+
+Para correr el script que crea una base de imagenes de un individuo:
+```bash
+python manage.py runscript --script-args nombre_persona
+
+```
+
+Para correr el script reconocimiento facial:
+```bash
+python manage.py runscript recognition_face
+
+```
