@@ -10,11 +10,6 @@ class CameraStream(object):
    
     def __init__(self, src=0):
         self.stream = cv2.VideoCapture(src)
-        self.stream.set(3, 640)
-        self.stream.set(4, 480)
-        self.stream.set(cv2.CAP_PROP_FPS, 5)
-        #self.stream = cv2.set(self.stream, CV_CAP_PROP_FRAME_HEIGHT, 480)
-        #self.stream = cv2.set(self.stream, CV_CAP_PROP_BUFFERSIZE, 3)
         (self.grabbed, self.frame) = self.stream.read()
         self.started = False
         self.read_lock = Lock()
@@ -52,11 +47,12 @@ class CameraStream(object):
 
 class VideoStreaming:
     def __init__(self):
+        cv2.destroyAllWindows()
         self.camera = set_cameras(1)
 
     def __del__(self):
         if self.camera:
-            self.camera.__exit__()
+            self.camera.stop()
 
     def get(self, request, *args, **kwargs):
         """Video streaming route. Put this in the src attribute of an img tag."""

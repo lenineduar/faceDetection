@@ -70,22 +70,26 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 class Video1StreamingView(LoginRequiredMixin, VideoStreaming, View):
     
     def __init__(self):
+        cv2.destroyAllWindows()
         self.camera = set_cameras(1)
 
 
 class Video2StreamingView(LoginRequiredMixin, VideoStreaming, View):
 
     def __init__(self):
+        cv2.destroyAllWindows()
         self.camera = set_cameras(2)
 
 
 class Video3StreamingView(LoginRequiredMixin, VideoStreaming, View):
 
     def __init__(self):
+        cv2.destroyAllWindows()
         self.camera = set_cameras(3)
 
 
 class Video4StreamingView(LoginRequiredMixin, VideoStreaming, View):
 
     def __init__(self):
+        cv2.destroyAllWindows()
         self.camera = set_cameras(4)
