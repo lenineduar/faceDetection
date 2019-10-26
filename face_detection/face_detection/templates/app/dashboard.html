@@ -34,9 +34,9 @@
 							<thead>
 								<tr>
 									<th class="wd-lg-25p">Camaras</th>
-									<th class="wd-lg-25p tx-right">Status</th>
-									<th class="wd-lg-25p tx-right">Details</th>
-									<th class="wd-lg-25p tx-right">Show</th>
+									<th class="wd-lg-25p tx-right">Estatus</th>
+									<th class="wd-lg-25p tx-right">Detalles</th>
+									<th class="wd-lg-25p tx-right">Ver</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -50,10 +50,10 @@
 										    <span class="badge badge-danger">No active</span>
 										{% endif %}	
 									</td>
-									<td class="tx-right tx-medium tx-inverse">Description</td>
+									<td class="tx-right tx-medium tx-inverse">{{ camera.description }}</td>
 									<td class="tx-right tx-medium tx-danger">
 									    <a href="javascript:vois(0)" data-toggle="modal" data-target="#{{ camera.slug }}">
-									    	View
+									    	Ver
 									    </a>
 									</td>
 								</tr>
@@ -157,7 +157,7 @@
 				</div><!-- media -->
 			</div><!-- media-list -->
 			<br/>
-			<a href="" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
+			<a href="{% url 'notifications' %}" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
 		</div>
 		<div v-if="emptyNotifications">
 			<div class="az-media-list-reviews">

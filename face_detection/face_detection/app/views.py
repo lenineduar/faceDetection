@@ -1,5 +1,6 @@
 import cv2
 from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
 from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
@@ -64,6 +65,31 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             cameras.append(cam)
 
         context["cameras"] = cameras
+
+        return context
+
+
+class ListNotificationsView(LoginRequiredMixin, ListView):
+    redirect_unauthenticated_users = True
+    template_name = "app/list_notifications.html"
+    model = Notifications
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(ListNotificationsView, self).get_context_data(**kwargs)
+        notifications = Notifications.objects.all()
+
+        paginator = Paginator(notifications, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            paginated_list = paginator.page(page)
+        except PageNotAnInteger:
+            paginated_list = paginator.page(1)
+        except EmptyPage:
+            paginated_list = paginator.page(paginator.num_pages)
+
+        context["notifications"] = paginated_list
 
         return context
 
