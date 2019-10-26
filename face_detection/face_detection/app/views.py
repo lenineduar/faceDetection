@@ -1,5 +1,6 @@
 import cv2
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
 from braces.views import LoginRequiredMixin, GroupRequiredMixin
@@ -93,10 +94,10 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
 
         return context
 
-
-class GetNotifications(LoginRequiredMixin, View):
+# Api Section
+class APIGetListNotifications(LoginRequiredMixin, View):
     def dispatch(self, *args, **kwargs):
-        return super(GetNotifications, self).dispatch(*args, **kwargs)
+        return super(APIGetListNotifications, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         notifications = Notifications.objects.all()
@@ -105,6 +106,7 @@ class GetNotifications(LoginRequiredMixin, View):
         info = []
         for notification in notifications:
             notif = {
+                'id': notification.id,
                 'person_name': notification.person_name.upper(),
                 'is_ready': notification.is_ready,
                 'created': change_utc_date(notification.created),
@@ -119,6 +121,26 @@ class GetNotifications(LoginRequiredMixin, View):
         return JsonResponse(data, safe=False)
 
 
+class APIGetNotification(LoginRequiredMixin, View):
+    def dispatch(self, *args, **kwargs):
+        return super(APIGetNotification, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        notification = get_object_or_404(Notifications, pk=kwargs['pk'])
+        notif = {
+            'id': notification.id,
+            'person_name': notification.person_name.upper(),
+            'is_ready': notification.is_ready,
+            'created': change_utc_date(notification.created),
+            'cam_description': notification.camera.description
+        }
+        notification.is_ready = True
+        notification.save()
+
+        return JsonResponse(notif, safe=False)
+
+
+# Streaming Section
 class Video1StreamingView(LoginRequiredMixin, VideoStreaming, View):
     
     def __init__(self):

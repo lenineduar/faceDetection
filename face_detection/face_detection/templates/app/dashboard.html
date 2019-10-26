@@ -52,7 +52,7 @@
 									</td>
 									<td class="tx-right tx-medium tx-inverse">{{ camera.description }}</td>
 									<td class="tx-right tx-medium tx-danger">
-									    <a href="javascript:vois(0)" data-toggle="modal" data-target="#{{ camera.slug }}">
+									    <a href="javascript:void(0)" data-toggle="modal" data-target="#{{ camera.slug }}">
 									    	Ver
 									    </a>
 									</td>
@@ -157,7 +157,7 @@
 				</div><!-- media -->
 			</div><!-- media-list -->
 			<br/>
-			<a href="{% url 'notifications' %}" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
+			<a href="{% url 'list_notifications' %}" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
 		</div>
 		<div v-if="emptyNotifications">
 			<div class="az-media-list-reviews">

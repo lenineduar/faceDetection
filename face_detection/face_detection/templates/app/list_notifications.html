@@ -37,7 +37,8 @@
 										{{ notification.camera.description }}
 									</td>
 									<td class="tx-right tx-danger">
-									    <a href="javascript:vois(0)">
+									    <a href="javascript:void(0)"
+									        @click="getNotification('{{ notification.pk }}')">
 									    	Ver
 									    </a>
 									</td>
@@ -68,33 +69,48 @@
 	<!-- NOTIFICATIONS -->
 	<div class="az-content-body-right">
 		<label class="az-content-label tx-base mg-b-25">
-			Notificaciones <span class="text-danger tx-9" v-if="not_read !== 0">[[ not_read ]] Nuevos</span>
+			Detalle de Notificación
 		</label>
-		<div v-if="!emptyNotifications">
+		<div v-if="!empty_detalle">
 			<div class="az-media-list-reviews">
-				<div class="media" v-for="notification in notifications">
-					<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+				<div class="media">
 					<div class="media-body">
 						<div class="d-flex justify-content-between mg-b-10">
 							<div>
-								<small class="text-danger" v-if="!notification.is_ready">Nueva detección</small>
-								<h6 class="mg-b-0">Detectado: [[ notification.person_name ]]</h6>
-								<div class="az-star-group">
-									<span>[[ notification.created ]]</span>
-								</div><!-- star-group -->
+								<img src="https://via.placeholder.com/500" alt="" width="100%">
 							</div>
 						</div>
-						<p class="mg-b-0">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a href="">Ver más</a></p>
+						<p class="mg-b-0">
+							<table class="table mg-b-0">
+								<tbody>
+									<tr><td>
+										<span class="tx-12">
+											Persona detectada: [[ notification.person_name ]]
+										</span>
+
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									    	Lugar/Cámara: [[ notification.cam_description ]]
+									    </span>
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									        Fecha: [[ notification.created ]]
+									    </span>
+									</td></tr>
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+						</p>
 					</div><!-- media-body -->
 				</div><!-- media -->
 			</div><!-- media-list -->
-			<br/>
-			<a href="" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
 		</div>
-		<div v-if="emptyNotifications">
+		<div v-if="empty_detalle">
 			<div class="az-media-list-reviews">
 				<div class="media text-center">
-					<span class="btn btn-block text-center">No hay notificaciones</span>
+					<span class="btn btn-block text-center">No se ha seleccionado alguna notificación</span>
 				</div><!-- media -->
 			</div><!-- media-list -->
 		</div>
@@ -107,5 +123,5 @@
 {% block extra_js %}
  <script src="https://vuejs.org/js/vue.min.js"></script>
  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
- <script src="{% static 'js/dashboard.js' %}"></script>
+ <script src="{% static 'js/list_notifications.js' %}"></script>
 {% endblock extra_js %}

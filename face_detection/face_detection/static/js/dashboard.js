@@ -29,7 +29,7 @@ var app = new Vue({
         },
         getNotifications: function(){
             vue = this;
-            var getNotificationsUrl = 'get/notifications';
+            var getNotificationsUrl = 'get/list/notifications';
             axios.get(getNotificationsUrl)
             .then(function (response) {
                 vue.notifications = response.data.notifications;
