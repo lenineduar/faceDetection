@@ -28,12 +28,12 @@
 		<div v-show="grid_1" class="row row-sm mg-b-20">
 			<div class="col-lg-12">
 				<div class="card card-table-two">
-					<h6 class="card-title">Cameras</h6>
+					<h6 class="card-title">Camaras</h6>
 					<div class="table-responsive mg-t-20">
 						<table class="table table-striped table-dashboard-two mg-b-0">
 							<thead>
 								<tr>
-									<th class="wd-lg-25p">Camera</th>
+									<th class="wd-lg-25p">Camaras</th>
 									<th class="wd-lg-25p tx-right">Status</th>
 									<th class="wd-lg-25p tx-right">Details</th>
 									<th class="wd-lg-25p tx-right">Show</th>
@@ -42,7 +42,7 @@
 							<tbody>
 								{% for camera in cameras %}
 								<tr>
-									<td>Camera {{ camera.id }}</td>
+									<td>Camara {{ camera.id }}</td>
 									<td class="tx-right tx-medium tx-inverse">
 										{% if camera.camera %}
 										    <span class="badge badge-info">Active</span>
@@ -74,7 +74,7 @@
 				<div class="col-lg-6 mg-b-20">
 					<div class="card card-dashboard-twentyfour">
 						<div class="card-header">
-							<h6 class="card-title">Camera {{ camera.id }}</h6>
+							<h6 class="card-title">Camara {{ camera.id }}</h6>
 							<div class="chart-legend">
 								{% if camera.camera %}
 								    <div><span class="bg-teal"></span> Active</div>
@@ -107,7 +107,7 @@
 				<div class="col-sm-6 col-lg-4 mg-b-20">
 					<div class="card card-dashboard-twentysix">
 						<div class="card-header">
-							<h6 class="card-title">Camera {{ camera.id }}</h6>
+							<h6 class="card-title">Camara {{ camera.id }}</h6>
 							<div class="chart-legend">
 								{% if camera.camera %}
 								    <div><span class="bg-teal"></span> Active</div>
@@ -135,51 +135,37 @@
 
 	<!-- NOTIFICATIONS -->
 	<div class="az-content-body-right">
-		<label class="az-content-label tx-base mg-b-25">Notifications</label>
-		<div class="az-media-list-reviews">
-			<div class="media">
-				<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
-				<div class="media-body">
-					<div class="d-flex justify-content-between mg-b-10">
-						<div>
-							<h6 class="mg-b-0">Socrates Itumay</h6>
-							<div class="az-star-group">
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<span>4.1</span>
-							</div><!-- star-group -->
+		<label class="az-content-label tx-base mg-b-25">
+			Notificaciones <span class="text-danger tx-9" v-if="not_read !== 0">[[ not_read ]] Nuevos</span>
+		</label>
+		<div v-if="!emptyNotifications">
+			<div class="az-media-list-reviews">
+				<div class="media" v-for="notification in notifications">
+					<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+					<div class="media-body">
+						<div class="d-flex justify-content-between mg-b-10">
+							<div>
+								<small class="text-danger" v-if="!notification.is_ready">Nueva detección</small>
+								<h6 class="mg-b-0">Detectado: [[ notification.person_name ]]</h6>
+								<div class="az-star-group">
+									<span>[[ notification.created ]]</span>
+								</div><!-- star-group -->
+							</div>
 						</div>
-						<small>1 hour ago</small>
-					</div>
-					<p class="mg-b-0">Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed amet...<a href="">Read more</a></p>
-				</div><!-- media-body -->
-			</div><!-- media -->
-			<div class="media">
-				<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
-				<div class="media-body">
-					<div class="d-flex justify-content-between mg-b-10">
-						<div>
-							<h6 class="mg-b-0">Reynante Labares</h6>
-							<div class="az-star-group">
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<div class="az-star-item"><i class="icon ion-md-star"></i></div>
-								<span>4.5</span>
-							</div><!-- star-group -->
-						</div>
-						<small>2 days ago</small>
-					</div>
-					<p class="mg-b-0">Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed amet...<a href="">Read more</a></p>
-				</div><!-- media-body -->
-			</div><!-- media -->
-		</div><!-- media-list -->
-		<br/>
-		<a href="" class="btn btn-outline-light btn-block">View All Notifications</a>
+						<p class="mg-b-0">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a href="">Ver más</a></p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+			<br/>
+			<a href="" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
+		</div>
+		<div v-if="emptyNotifications">
+			<div class="az-media-list-reviews">
+				<div class="media text-center">
+					<span class="btn btn-block text-center">No hay notificaciones</span>
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
 	</div>
     <!-- END NOTIFICATIONS -->
     {% include "app/modals/camera_modals.html" %}

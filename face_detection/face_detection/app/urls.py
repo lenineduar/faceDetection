@@ -6,6 +6,7 @@ urlpatterns = [
     path("", view=views.IndexView.as_view(), name="index"),
     path("dashboard", view=views.DashboardView.as_view(), name="dashboard"),
     
+    path("get/notifications", view=views.GetNotifications.as_view(), name="get_notifications"),
 
 
     path("video1/streaming", view=views.Video1StreamingView.as_view(), name="video1_streaming"),

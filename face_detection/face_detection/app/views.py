@@ -5,8 +5,9 @@ from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
 from utils.camera import CameraStream, VideoStreaming
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
+from .utils import change_utc_date
 
-from .models import Cameras
+from .models import Cameras, Notifications
 
 def set_cameras(pk):
     cameradb = Cameras.objects.filter(is_active=True, pk=pk)
@@ -65,6 +66,31 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context["cameras"] = cameras
 
         return context
+
+
+class GetNotifications(LoginRequiredMixin, View):
+    def dispatch(self, *args, **kwargs):
+        return super(GetNotifications, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        notifications = Notifications.objects.all()
+        not_read_not = notifications.filter(is_ready=False).count()
+        notifications = notifications.order_by("-created")[:10]
+        info = []
+        for notification in notifications:
+            notif = {
+                'person_name': notification.person_name.upper(),
+                'is_ready': notification.is_ready,
+                'created': change_utc_date(notification.created),
+                'cam_description': notification.camera.description
+            }
+            info.append(notif)
+
+        data = {
+            'notifications': info,
+            'not_read_not': not_read_not,
+        }
+        return JsonResponse(data, safe=False)
 
 
 class Video1StreamingView(LoginRequiredMixin, VideoStreaming, View):
