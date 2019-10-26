@@ -16,6 +16,9 @@ var app = new Vue({
                 vue.notification = response.data;
                 vue.empty_detalle = false;
             })
+        },
+        urlPage: function(pk){
+        	return '/notification/'+pk;
         }
     },
 });

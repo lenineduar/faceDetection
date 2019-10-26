@@ -6,6 +6,7 @@ urlpatterns = [
     path("", view=views.IndexView.as_view(), name="index"),
     path("dashboard", view=views.DashboardView.as_view(), name="dashboard"),
     path("notifications", view=views.ListNotificationsView.as_view(), name="list_notifications"),
+    path("notification/<str:pk>", view=views.DetailNotificationView.as_view(), name="notification"),
     
     
     #URLs para las API servicios

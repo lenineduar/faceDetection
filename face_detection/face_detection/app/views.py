@@ -94,6 +94,18 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
 
         return context
 
+class DetailNotificationView(LoginRequiredMixin, DetailView):
+    redirect_unauthenticated_users = True
+    template_name = "app/notification.html"
+    model = Notifications
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailNotificationView, self).get_context_data(**kwargs)
+
+        context["notification"] = object
+
+        return context
+
 # Api Section
 class APIGetListNotifications(LoginRequiredMixin, View):
     def dispatch(self, *args, **kwargs):

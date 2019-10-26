@@ -39,6 +39,9 @@ var app = new Vue({
         getCountNotifications: function(){
             return this.notifications.length;
         },
+        urlPage: function(pk){
+            return '/notification/'+pk;
+        }
     },
     computed: {
         emptyNotifications: function(){
