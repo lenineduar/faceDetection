@@ -140,10 +140,9 @@
 		</label>
 		<div v-if="!emptyNotifications">
 			<div class="az-media-list-reviews">
-				<div class="media" v-for="notification in notifications">
-					<div class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></div>
+				<div class="media" v-for="notification in notifications" style="margin: 0px">
 					<div class="media-body">
-						<div class="d-flex justify-content-between mg-b-10">
+						<div class="d-flex justify-content-between">
 							<div>
 								<small class="text-danger" v-if="!notification.is_ready">Nueva detección</small>
 								<h6 class="mg-b-0">Detectado: [[ notification.person_name ]]</h6>
@@ -153,6 +152,7 @@
 							</div>
 						</div>
 						<p class="mg-b-0">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a v-bind:href="urlPage(notification.id)">Ver más</a></p>
+						<hr>
 					</div><!-- media-body -->
 				</div><!-- media -->
 			</div><!-- media-list -->

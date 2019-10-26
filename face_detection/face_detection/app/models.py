@@ -15,4 +15,5 @@ class Notifications(models.Model):
     camera = models.ForeignKey(Cameras, on_delete=models.CASCADE,)
     person_name = models.CharField(max_length=255, blank=True, null=True, default='')
     is_ready = models.BooleanField(default=False)
+    image_capture = models.TextField(default='', blank = True, null=True)
     created = models.DateTimeField(default=timezone.now)

@@ -4,6 +4,7 @@ var app = new Vue({
     data: {
         notification: [],
         empty_detalle: true,
+        image_capture: ''
     },
     created: function(){
     },
@@ -15,10 +16,15 @@ var app = new Vue({
             .then(function (response) {
                 vue.notification = response.data;
                 vue.empty_detalle = false;
+                vue.setImageCapture(response.data.image)
             })
         },
         urlPage: function(pk){
         	return '/notification/'+pk;
-        }
+        },
+        setImageCapture: function(image){
+            this.image_capture = 'https://via.placeholder.com/500'
+            if (image != ''){ this.image_capture = image }
+        },
     },
 });

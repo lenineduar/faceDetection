@@ -74,11 +74,11 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
     redirect_unauthenticated_users = True
     template_name = "app/list_notifications.html"
     model = Notifications
-    paginate_by = 20
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(ListNotificationsView, self).get_context_data(**kwargs)
-        notifications = Notifications.objects.all()
+        notifications = Notifications.objects.all().order_by('-created')
 
         paginator = Paginator(notifications, self.paginate_by)
         page = self.request.GET.get('page')
@@ -101,8 +101,9 @@ class DetailNotificationView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailNotificationView, self).get_context_data(**kwargs)
-
-        context["notification"] = object
+        self.object.is_ready = True
+        self.object.save()
+        context["notification"] = self.object
 
         return context
 
@@ -114,7 +115,7 @@ class APIGetListNotifications(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         notifications = Notifications.objects.all()
         not_read_not = notifications.filter(is_ready=False).count()
-        notifications = notifications.order_by("-created")[:10]
+        notifications = notifications.order_by("-created")[:5]
         info = []
         for notification in notifications:
             notif = {
@@ -144,7 +145,8 @@ class APIGetNotification(LoginRequiredMixin, View):
             'person_name': notification.person_name.upper(),
             'is_ready': notification.is_ready,
             'created': change_utc_date(notification.created),
-            'cam_description': notification.camera.description
+            'cam_description': notification.camera.description,
+            'image': 'data:image/png;base64,%s' % (notification.image_capture) if notification.image_capture else ''
         }
         notification.is_ready = True
         notification.save()

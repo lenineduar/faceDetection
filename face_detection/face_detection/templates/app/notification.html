@@ -10,7 +10,11 @@
 					<h6 class="card-title mg-b-20">Captura</h6>
 					<br/>
 					<p class="text-center">
-						<img src="https://via.placeholder.com/500" alt="" width="60%">
+						{% if not object.image_capture%}
+							<img src="https://via.placeholder.com/500" alt="" width="60%">
+						{%  else %}
+						    <img src="data:image/png;base64,{{object.image_capture}}" alt="" width="60%">
+						{% endif %}	
 					</p>
 				</div><!-- card-dashboard-five -->
 			</div><!-- col -->
@@ -32,7 +36,7 @@
 								<tbody>
 									<tr><td>
 										<span class="tx-12">
-											Persona detectada: {{ object.person_name }}
+											Persona detectada: {{ object.person_name | upper }}
 										</span>
 
 									</td></tr>
