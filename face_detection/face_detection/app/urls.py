@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from . import views_streaming as views_stream
 
 urlpatterns = [
     path("", view=views.IndexView.as_view(), name="index"),
@@ -13,9 +14,12 @@ urlpatterns = [
     path("get/list/notifications", view=views.APIGetListNotifications.as_view(), name="get_list_notifications"),
     path("get/notification/<str:pk>/", view=views.APIGetNotification.as_view(), name="get_notification"),
 
-    # URLs de el servicio de Streaming
-    path("video1/streaming", view=views.Video1StreamingView.as_view(), name="video1_streaming"),
-    path("video2/streaming", view=views.Video2StreamingView.as_view(), name="video2_streaming"),
-    path("video3/streaming", view=views.Video3StreamingView.as_view(), name="video3_streaming"),
-    path("video4/streaming", view=views.Video4StreamingView.as_view(), name="video4_streaming"),
+    # URLs del servicio de Streaming
+    path("video1/streaming", view=views_stream.Video1StreamingView, name="video1_streaming"),
+    path("video2/streaming", view=views_stream.Video2StreamingView, name="video2_streaming"),
+    path("video3/streaming", view=views_stream.Video3StreamingView, name="video3_streaming"),
+    path("video4/streaming", view=views_stream.Video4StreamingView, name="video4_streaming"),
+
+
+    path("frame/video2", view=views_stream.FrameVideo2, name="frame_video2"),
 ]
