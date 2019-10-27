@@ -43,27 +43,3 @@ class CameraStream(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.stream.release()
-
-
-class VideoStreaming:
-    def __init__(self):
-        cv2.destroyAllWindows()
-        self.camera = set_cameras(1)
-
-    def __del__(self):
-        if self.camera:
-            self.camera.stop()
-
-    def get(self, request, *args, **kwargs):
-        """Video streaming route. Put this in the src attribute of an img tag."""
-        if self.camera:
-            return StreamingHttpResponse(self.get_frame(self.camera),
-                content_type='multipart/x-mixed-replace; boundary=frame')
-
-    def get_frame(self, cap):
-        """Video streaming generator function."""
-        while cap:
-            frame = cap.read()
-            convert = cv2.imencode('.jpg', frame)[1].tobytes()
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + convert + b'\r\n')
