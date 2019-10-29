@@ -60,10 +60,15 @@ def Video4StreamingView(request):
             content_type='multipart/x-mixed-replace; boundary=frame')
 
 
-def FrameVideo2(resquest):
-    frame = recognition_frame(cameras[2])
-    data = {
-        'frame': frame.tolist(),
-    }
+def FrameVideo(resquest, camera):
+    if cameras[int(camera)]:
+        frame = recognition_frame(cameras[int(camera)])
+        data = {
+            'frame': frame.tolist(),
+        }
+    else:
+        data = {
+            'frame': "error",
+        }
     data = json.dumps(data)
     return JsonResponse(data, safe=False)

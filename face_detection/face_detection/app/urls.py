@@ -21,5 +21,5 @@ urlpatterns = [
     path("video4/streaming", view=views_stream.Video4StreamingView, name="video4_streaming"),
 
 
-    path("frame/video2", view=views_stream.FrameVideo2, name="frame_video2"),
+    path("frame/video/<str:camera>/", view=views_stream.FrameVideo, name="frame_video"),
 ]
