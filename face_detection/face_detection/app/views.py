@@ -41,7 +41,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         cameras = []
         for i in range(1, settings.CAMERAS_ACTIVE+1):
             if Cameras.objects.filter(is_active=True, pk=i):
-                camdb = Cameras.objects.filter(is_active=True, pk=i),
+                camdb = Cameras.objects.filter(is_active=True, pk=i).first(),
             else:
                 camdb = None
 

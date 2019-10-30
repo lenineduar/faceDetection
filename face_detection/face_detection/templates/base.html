@@ -30,7 +30,7 @@
   </head>
   <body class="az-body">
     <div class="az-iconbar az-iconbar-primary">
-      <a href="{% url 'dashboard' %}" class="az-iconbar-logo"><i class="typcn typcn-chart-bar-outline"></i></a>
+      <a href="{% url 'dashboard' %}" class="az-iconbar-logo"><img src="{% static 'images/logo-fd-white.png' %}" alt="" width="50%"></a>
       <nav class="nav" style="justify-content: flex-start">
         <a href="{% url 'dashboard' %}" class="nav-link {{ nav_dashboard }}">
           <i class="typcn typcn-device-laptop"></i>
@@ -54,7 +54,7 @@
             <a href="" id="azIconbarShow" class="az-header-menu-icon d-lg-none"><span></span></a>
           </div><!-- az-header-left -->
           <div class="az-header-center">
-            <h3>Face Detection</h3>
+            <img src="{% static 'images/face_detection.png' %}" alt="" width="20%">
           </div><!-- az-header-center -->
           <div class="az-header-right">
             <!--
@@ -63,26 +63,26 @@
             </div> --><!-- az-header-notification -->
 
             <div class="dropdown az-profile-menu">
-              <a href="" class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></a>
+              <a href="" class="az-img-user"><img src="{% static 'images/avatar_fd.png' %}" alt=""></a>
               <div class="dropdown-menu">
                 <div class="az-dropdown-header d-sm-none">
                   <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
                 </div>
                 <div class="az-header-profile">
                   <div class="az-img-user">
-                    <img src="https://via.placeholder.com/500" alt="">
+                    <img src="{% static 'images/avatar_fd.png' %}" alt="">
                   </div><!-- az-img-user -->
                   <h6>Face Detection</h6>
                 </div><!-- az-header-profile -->
 
                 <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> 
-                  {% trans "My Profile" %}
+                  Mi perfil
                 </a>
                 <a href="" class="dropdown-item"><i class="typcn typcn-key-outline"></i> 
-                  {%trans "Change Password" %}
+                  Cambiar Contraseña
                 </a>
                 <a href="javascript:sign_out()" class="dropdown-item"><i class="typcn typcn-power-outline"></i> 
-                  {% trans "Sign Out" %}
+                  Salir
                 </a>
               </div><!-- dropdown-menu -->
             </div>

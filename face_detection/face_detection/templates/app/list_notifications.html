@@ -12,25 +12,18 @@
 						<table class="table table-striped table-dashboard-two mg-b-0">
 							<thead>
 								<tr>
-									<th class="wd-lg-15p">Estatus</th>
 									<th class="wd-lg-25p">Persona detectada</th>
 									<th class="wd-lg-20p tx-right">Fecha</th>
 									<th class="wd-lg-25p tx-right">Ubicación</th>
 									<th class="wd-lg-15p tx-right">Detalles</th>
+									<th class="wd-lg-15p tx-right">Estatus</th>
 								</tr>
 							</thead>
 							<tbody>
 								{% for notification in notifications %}
 								<tr>
-									<td>
-										{% if notification.is_ready %}
-										    <span class="text-success">Visto</span>
-										{% else %}
-										    <span class="text-danger">Nuevo</span>
-										{% endif %}
-									</td>
 									<td>{{ notification.person_name | upper }}</td>
-									<td class="tx-right tx-inverse">
+									<td class="tx-right tx-inverse font-weight-bold">
 										{{ notification.created }}
 									</td>
 									<td class="tx-right tx-inverse">
@@ -41,6 +34,15 @@
 									        @click="getNotification('{{ notification.pk }}')">
 									    	Ver
 									    </a>
+									</td>
+									<td class="tx-right tx-inverse">
+										{% if notification.is_ready %}
+										    <i class="typcn typcn-input-checked text-success"></i> 
+										    <span class="text-success tx-10 font-weight-bold">Visto</span>
+										{% else %}
+										    <i class="typcn typcn-delete text-danger"></i>
+										    <span class="text-danger tx-10 font-weight-bold">Nuevo</span>
+										{% endif %}
 									</td>
 								</tr>
 								{% endfor %}
