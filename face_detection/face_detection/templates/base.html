@@ -32,10 +32,10 @@
     <div class="az-iconbar az-iconbar-primary">
       <a href="{% url 'dashboard' %}" class="az-iconbar-logo"><i class="typcn typcn-chart-bar-outline"></i></a>
       <nav class="nav" style="justify-content: flex-start">
-        <a href="{% url 'dashboard' %}" class="nav-link active">
+        <a href="{% url 'dashboard' %}" class="nav-link {{ nav_dashboard }}">
           <i class="typcn typcn-device-laptop"></i>
         </a>
-        <a href="" class="nav-link">
+        <a href="{% url 'list_notifications' %}" class="nav-link {{ nav_notifications }}">
           <i class="typcn typcn-bell"></i>
         </a>
         <a href="" class="nav-link">
@@ -44,7 +44,6 @@
       </nav>
       <div class="az-iconbar-bottom">
         <a href="" class="az-iconbar-help"><i class="far fa-question-circle"></i></a>
-        <a href="" class="az-img-user online"><img src="https://via.placeholder.com/500" alt=""></a>
       </div><!-- az-iconbar-bottom -->
     </div><!-- az-iconbar -->
 
@@ -58,9 +57,11 @@
             <h3>Face Detection</h3>
           </div><!-- az-header-center -->
           <div class="az-header-right">
+            <!--
             <div class="az-header-notification">
               <a href="" class="new"><i class="typcn typcn-bell"></i></a>
-            </div><!-- az-header-notification -->
+            </div> --><!-- az-header-notification -->
+
             <div class="dropdown az-profile-menu">
               <a href="" class="az-img-user"><img src="https://via.placeholder.com/500" alt=""></a>
               <div class="dropdown-menu">
@@ -114,66 +115,7 @@
         $("#form-logout").submit();
       }
     </script>
-    <script>
-
-      $(function(){
-        'use strict'
-
-        $('.az-iconbar .nav-link').on('click', function(e){
-          e.preventDefault();
-
-          $(this).addClass('active');
-          $(this).siblings().removeClass('active');
-
-          $('.az-iconbar-aside').addClass('show');
-
-          var targ = $(this).attr('href');
-          $(targ).addClass('show');
-          $(targ).siblings().removeClass('show');
-        });
-
-        $('.az-iconbar-body .with-sub').on('click', function(e){
-          e.preventDefault();
-          $(this).parent().addClass('show');
-          $(this).parent().siblings().removeClass('show');
-        });
-
-        $('.az-iconbar-toggle-menu').on('click', function(e){
-          e.preventDefault();
-
-          if(window.matchMedia('(min-width: 992px)').matches) {
-            $('.az-iconbar .nav-link.active').removeClass('active');
-            $('.az-iconbar-aside').removeClass('show');
-          } else {
-            $('body').removeClass('az-iconbar-show');
-          }
-        })
-
-        $('#azIconbarShow').on('click', function(e){
-          e.preventDefault();
-          $('body').toggleClass('az-iconbar-show');
-
-          var targ = $('.az-iconbar .nav-link.active').attr('href');
-          $(targ).addClass('show');
-        });
-
-        $(document).bind('click touchstart', function(e){
-          e.stopPropagation();
-
-          var azContent = $(e.target).closest('.az-content').length;
-          var azIconBarMenu = $(e.target).closest('.az-header-menu-icon').length;
-
-          if(azContent) {
-            $('.az-iconbar-aside').removeClass('show');
-
-            // for mobile
-            if(!azIconBarMenu) {
-              $('body').removeClass('az-iconbar-show');
-            }
-          }
-        })
-      });
-    </script>
+    
     {% block extra_js %}{% endblock extra_js %}
   </body>
 </html>

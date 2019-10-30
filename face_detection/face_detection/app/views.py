@@ -54,6 +54,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             cameras.append(cam)
 
         context["cameras"] = cameras
+        context["nav_dashboard"] = "active"
 
         return context
 
@@ -79,6 +80,7 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
             paginated_list = paginator.page(paginator.num_pages)
 
         context["notifications"] = paginated_list
+        context["nav_notifications"] = "active"
 
         return context
 
