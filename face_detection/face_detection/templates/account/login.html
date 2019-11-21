@@ -1,0 +1,59 @@
+{% extends "base_login.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+{{ form.media }}
+{% endblock %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+<div class="az-signin-wrapper">
+    <div class="az-card-signin">
+        <div class="az-logo">
+            <!-- <img src=""  alt=""> -->
+            <img class="mg-r-auto mg-l-auto" src="{% static 'images/face_detection.png' %}" alt="">
+        </div>
+
+        <div class="az-signin-header">
+            <h1 style="font-size: 21px; font-weight: 400">Por favor inicie sesión para continuar</h1>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert" style="font-size: 0.8em;">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="alert alert-danger" role="alert" style="font-size: 0.8em;">
+                    {% blocktrans trimmed %}
+                        You are authenticated as {{ username }}, but are not authorized to
+                        access this page. Would you like to login to a different account?
+                    {% endblocktrans %}
+                </div>
+            {% endif %}
+
+
+            <form action="{{ app_path }}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Correo electrónico o Username</label>
+                    <input id=id_login" name="login" type="text" class="form-control" placeholder="Correo electrónico" required>
+                    {{ form.login.errors }}
+                </div><!-- form-group -->
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input id="id_password" name="password" type="password" class="form-control" placeholder="Ingrese su contraseña" required>
+                    {{ form.password.errors }}
+                </div><!-- form-group -->
+                <button class="btn btn-primary btn-block">Iniciar Sesión</button>
+            </form>
+        </div><!-- az-signin-header -->
+        <div class="az-signin-footer">
+            <p><a href="{% url 'account_reset_password' %}">¿Olvidó su contraseña?</a></p>  
+        </div><!-- az-signin-footer -->
+    </div>
+</div>
+{% endblock content %}

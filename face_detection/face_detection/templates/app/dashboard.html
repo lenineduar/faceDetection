@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+        <div class="row row-sm">
+        	<div class="col-lg-12 pd-20 bg-white-9 mg-b-20">
+	            <nav class="nav az-nav-line flex-column flex-md-row">
+	            	<span class="nav-link"></span>
+	            	<a class="nav-link active" data-toggle="tab" href="javascript:void(0)" 
+		              @click="changeGrid(3)">
+		              	<i class="fas fa-grip-horizontal"></i>
+		            </a>
+	          
+	              	<a class="nav-link" data-toggle="tab" href="javascript:void(0)" 
+	              	@click="changeGrid(2)">
+	              		<i class="fas fa-th-large"></i>
+	              	</a>
+		            <a class="nav-link" data-toggle="tab" href="javascript:void(0)" 
+		              @click="changeGrid(1)">
+		            	<i class="fas fa-list"></i>
+		            </a>
+	            </nav>
+          	</div><!-- pd-10 -->
+        </div>
+		<!-- GRID 1 -->
+		<div v-show="grid_1" class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title">Camaras</h6>
+					<div class="table-responsive mg-t-20">
+						<table class="table table-striped table-dashboard-two mg-b-0">
+							<thead>
+								<tr>
+									<th class="wd-lg-25p">Camaras</th>
+									<th class="wd-lg-25p tx-right">Estatus</th>
+									<th class="wd-lg-25p tx-right">Detalles</th>
+									<th class="wd-lg-25p tx-right">Ver</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for camera in cameras %}
+								<tr>
+									<td>Camara {{ camera.id }}</td>
+									<td class="tx-right tx-medium tx-inverse">
+										{% if camera.camera %}
+										    <span class="badge badge-info">Active</span>
+										{% else %}
+										    <span class="badge badge-danger">No active</span>
+										{% endif %}	
+									</td>
+									<td class="tx-right tx-medium tx-inverse">{{ camera.camera.0.description }}</td>
+									<td class="tx-right tx-medium tx-danger">
+									    <a href="javascript:void(0)" data-toggle="modal" data-target="#{{ camera.slug }}">
+									    	Ver
+									    </a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div><!-- table-responsive -->
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+
+
+        <!-- GRID 2 -->
+        <div v-show="grid_2">
+			<div class="row row-sm" >
+				{% for camera in cameras %}
+				<div class="col-lg-6 mg-b-20">
+					<div class="card card-dashboard-twentyfour">
+						<div class="card-header">
+							<h6 class="card-title">Camara {{ camera.id }}</h6>
+							<div class="chart-legend">
+								{% if camera.camera %}
+								    <div><span class="bg-teal"></span> Active</div>
+								{% else %}
+								    <div><span class="bg-danger"></span> No active</div>
+								{% endif %}
+							</div><!-- chart-legend -->
+						</div><!-- card-header -->
+						<div class="card-body">
+							<div class="pd-x-15 pb-3">
+								{% if camera.camera %}
+								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="230" width="100%">
+								{% else %}
+									<img src="{% static 'images/no_signal.jpg' %}" height="230" width="100%">
+							    {% endif %}
+							</div>
+						</div><!-- card-body -->
+					</div><!-- card -->
+				</div><!-- col -->
+				{% endfor %}
+			</div>
+		</div>
+        <!-- END GRID 2 -->
+
+
+		<!-- GRID 3 -->
+		<div v-show="grid_3">
+			<div class="row row-sm mg-b-20">
+				{% for camera in cameras %}
+				<div class="col-sm-6 col-lg-4 mg-b-20">
+					<div class="card card-dashboard-twentysix">
+						<div class="card-header">
+							<h6 class="card-title">Camara {{ camera.id }}</h6>
+							<div class="chart-legend">
+								{% if camera.camera %}
+								    <div><span class="bg-teal"></span> Active</div>
+								{% else %}
+								    <div><span class="bg-danger"></span> No active</div>
+								{% endif %}
+							</div><!-- chart-legend -->
+						</div><!-- card-header -->
+						<div class="card-body">
+							<div class="pd-x-15 pb-3">
+								{% if camera.camera %}
+								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="150" width="100%">
+								{% else %}
+									<img src="{% static 'images/no_signal.jpg' %}" height="150" width="100%">
+							    {% endif %}
+							</div>
+						</div><!-- card-body -->
+					</div><!-- card -->
+				</div><!-- col -->
+			    {% endfor %}
+			</div><!-- row -->
+		</div>
+		<!-- END GRID 3 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">
+			Notificaciones <span class="text-danger tx-9" v-if="not_read !== 0">[[ not_read ]] Nuevos</span>
+		</label>
+		<div v-if="!emptyNotifications">
+			<div class="az-media-list-reviews">
+				<div class="media" v-for="notification in notifications" style="margin: 0px">
+					<div class="media-body">
+						<div class="d-flex justify-content-between">
+							<div>
+								<small class="text-danger" v-if="!notification.is_ready">Nueva detección</small>
+								<h6 class="mg-b-0">Detectado: [[ notification.person_name ]]</h6>
+								<div class="az-star-group">
+									<span>[[ notification.created ]]</span>
+								</div><!-- star-group -->
+							</div>
+						</div>
+						<p class="mg-b-0">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a v-bind:href="urlPage(notification.id)">Ver más</a></p>
+						<hr>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+			<br/>
+			<a href="{% url 'list_notifications' %}" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
+		</div>
+		<div v-if="emptyNotifications">
+			<div class="az-media-list-reviews">
+				<div class="media text-center">
+					<span class="btn btn-block text-center">No hay notificaciones</span>
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+    {% include "app/modals/camera_modals.html" %}
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_js %}
+ <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+ <script src="{% static 'pkg/vue.js' %}"></script>
+ <script src="{% static 'pkg/axios.js' %}"></script>
+ <script src="{% static 'js/dashboard.js' %}"></script>
+ <script>
+    var cam1 = document.getElementsByClassName('camara_1');
+    var socket1 = io.connect('http://localhost:5000/cam1');
+    socket1.on('data', function(data) {
+        cam1[0].src = 'data:image/jpeg;base64,' + data;
+        cam1[1].src = 'data:image/jpeg;base64,' + data;
+        cam1[2].src = 'data:image/jpeg;base64,' + data;
+    });
+ </script>
+{% endblock extra_js %}

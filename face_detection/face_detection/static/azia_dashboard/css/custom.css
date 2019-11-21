@@ -1,0 +1,148 @@
+.az-logo img {
+    width: 170px;
+    height: auto;
+    margin-top: 7px;
+  }
+  
+  .card-dashboard-eleven .card-footer > div {
+    border-top: none;
+  }
+  .overview-stats i {
+    margin-right: 20px; 
+  }
+
+.card-dashboard-table-six .table thead tr:last-child th {
+    padding: 10px 24px;    
+}
+
+.wrapper-card-header-logo {
+    display: block;
+    margin-top: -35px;
+    overflow: hidden;
+    width: 70px;
+    z-index: 10000;
+}
+
+img.card-header-logo {
+    height: auto;
+    width: 100%;
+}
+
+.az-header-menu {
+    z-index: 11000;
+}
+
+.az-profile-menu .dropdown-menu {
+    z-index: 11000;
+}
+
+/* Bitcoin btn */
+.btn-outline-bitcoin {
+    color: #f2a900;
+    border-color: #f2a900;
+}
+
+.btn-outline-bitcoin:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #f2a900;
+    border-color: #f2a900;
+}
+
+.btn-outline-bitcoin:hover, .btn-outline-bitcoin:focus {
+    color: #f2a900;
+}
+
+/* Litecoin btn */
+.btn-outline-litecoin {
+    color: #b8b8b8;
+    border-color: #b8b8b8;
+}
+
+.btn-outline-litecoin:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #b8b8b8;
+    border-color: #b8b8b8;
+}
+
+.btn-outline-litecoin:hover, .btn-outline-litecoin:focus {
+    color: #b8b8b8;
+}
+
+/* Dash btn */
+.btn-outline-dash {
+    color: #008de4;
+    border-color: #008de4;
+}
+
+.btn-outline-dash:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #008de4;
+    border-color: #008de4;
+}
+
+.btn-outline-dash:hover, .btn-outline-dash:focus {
+    color: #008de4;
+}
+
+/* Ethereum btn */
+.btn-outline-ethereum {
+    color: #3c3c3d;
+    border-color: #3c3c3d;
+}
+
+.btn-outline-ethereum:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #3c3c3d;
+    border-color: #3c3c3d;
+}
+
+.btn-outline-ethereum:hover, .btn-outline-ethereum:focus {
+    color: #3c3c3d;
+}
+
+.payment-step {
+    min-height: 450px;
+}
+
+.tx-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+
+
+/* KYC */
+.card-minimal-three .no-transactions-panel {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.kyc-icon-wrapper {
+    font-size: 60px;
+}
+
+.kyc-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background-color: #e3e7ed;
+    color: #97a3b9;
+    font-size: 55px;
+    border-radius: 100%;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .wizard.vertical > .content {
+        height: 500px;
+    }
+}
+
+.select2 {
+    width: 100% !important;
+}

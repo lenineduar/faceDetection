@@ -1,0 +1,121 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js' %}) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130582519-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-130582519-1');
+    </script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Face Detection</title>
+
+    <!-- vendor css -->
+    <link href="{% static 'azia_dashboard/lib/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/typicons.font/typicons.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
+
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="{% static 'azia_dashboard/css/azia.css' %}">
+
+  </head>
+  <body class="az-body">
+    <div class="az-iconbar az-iconbar-primary">
+      <a href="{% url 'dashboard' %}" class="az-iconbar-logo"><img src="{% static 'images/logo-fd-white.png' %}" alt="" width="50%"></a>
+      <nav class="nav" style="justify-content: flex-start">
+        <a href="{% url 'dashboard' %}" class="nav-link {{ nav_dashboard }}">
+          <i class="typcn typcn-device-laptop"></i>
+        </a>
+        <a href="{% url 'list_notifications' %}" class="nav-link {{ nav_notifications }}">
+          <i class="typcn typcn-bell"></i>
+        </a>
+        <a href="" class="nav-link">
+          <i class="typcn typcn-th-list"></i>
+        </a>
+      </nav>
+      <div class="az-iconbar-bottom">
+        <a href="" class="az-iconbar-help"><i class="far fa-question-circle"></i></a>
+      </div><!-- az-iconbar-bottom -->
+    </div><!-- az-iconbar -->
+
+    <div class="az-content az-content-dashboard-ten">
+      <div class="az-header">
+        <div class="container-fluid">
+          <div class="az-header-left">
+            <a href="" id="azIconbarShow" class="az-header-menu-icon d-lg-none"><span></span></a>
+          </div><!-- az-header-left -->
+          <div class="az-header-center">
+            <img src="{% static 'images/face_detection.png' %}" alt="" width="20%">
+          </div><!-- az-header-center -->
+          <div class="az-header-right">
+            <!--
+            <div class="az-header-notification">
+              <a href="" class="new"><i class="typcn typcn-bell"></i></a>
+            </div> --><!-- az-header-notification -->
+
+            <div class="dropdown az-profile-menu">
+              <a href="" class="az-img-user"><img src="{% static 'images/avatar_fd.png' %}" alt=""></a>
+              <div class="dropdown-menu">
+                <div class="az-dropdown-header d-sm-none">
+                  <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+                </div>
+                <div class="az-header-profile">
+                  <div class="az-img-user">
+                    <img src="{% static 'images/avatar_fd.png' %}" alt="">
+                  </div><!-- az-img-user -->
+                  <h6>Face Detection</h6>
+                </div><!-- az-header-profile -->
+
+                <a href="" class="dropdown-item"><i class="typcn typcn-user-outline"></i> 
+                  Mi perfil
+                </a>
+                <a href="" class="dropdown-item"><i class="typcn typcn-key-outline"></i> 
+                  Cambiar Contraseña
+                </a>
+                <a href="javascript:sign_out()" class="dropdown-item"><i class="typcn typcn-power-outline"></i> 
+                  Salir
+                </a>
+              </div><!-- dropdown-menu -->
+            </div>
+          </div><!-- az-header-right -->
+        </div><!-- container -->
+      </div><!-- az-header -->
+
+      {% block content %}
+      {% endblock content %}
+
+      <div class="az-footer ht-40">
+        <div class="container-fluid ht-100p pd-t-0-f">
+          <span>&copy; 2020 Face Detection</span>
+        </div><!-- container -->
+      </div><!-- az-footer -->
+    </div><!-- az-content -->
+
+    <form id="form-logout" method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+    </form>
+
+    <script src="{% static 'azia_dashboard/lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/ionicons/ionicons.js' %}"></script>
+
+    <script src="{% static 'azia_dashboard/js/azia.js' %}"></script>
+    <script src="{% static 'azia_dashboard/js/dashboard.sampledata.js' %}"></script>
+    <script type="text/javascript">
+      function sign_out(){
+        $("#form-logout").submit();
+      }
+    </script>
+    
+    {% block extra_js %}{% endblock extra_js %}
+  </body>
+</html>
