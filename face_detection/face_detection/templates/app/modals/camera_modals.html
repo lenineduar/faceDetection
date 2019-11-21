@@ -21,11 +21,7 @@
         <br/>
         <p>
           {% if camera.camera %}
-<<<<<<< HEAD
             <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" width="100%">
-=======
-            <img src="{% url camera.url_stream %}" width="100%">
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
           {% else %}
             <img src="{% static 'images/no_signal.jpg' %}" height="400" width="100%">
           {% endif %}

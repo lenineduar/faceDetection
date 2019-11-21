@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import sys
 
-=======
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
+import sys
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -11,21 +8,15 @@ from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from .utils import change_utc_date
-<<<<<<< HEAD
 #from utils.cameras_discovery import discovery
-=======
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 
 from .models import Cameras, Notifications
 
 
-<<<<<<< HEAD
 #if sys.argv[1] == "runserver":
 #    discovery()
 
 
-=======
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 # Create your views here.
 class IndexView(LoginRequiredMixin, View):
     redirect_unauthenticated_users = True 
@@ -71,10 +62,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         context["cameras"] = cameras
         context["nav_dashboard"] = "active"
-<<<<<<< HEAD
         context["cam_test"] = Cameras.objects.filter(is_active=True, pk=1).first()
-=======
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 
         return context
 
@@ -118,8 +106,6 @@ class DetailNotificationView(LoginRequiredMixin, DetailView):
 
         return context
 
-<<<<<<< HEAD
-
 # -------------------------------------------------------
 # Api Section
 # -------------------------------------------------------
@@ -140,11 +126,6 @@ class APIGetCamerasActives(View):
         return JsonResponse(cameras, safe=False)
 
 
-=======
-# -------------------------------------------------------
-# Api Section
-# -------------------------------------------------------
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 class APIGetListNotifications(LoginRequiredMixin, View):
     def dispatch(self, *args, **kwargs):
         return super(APIGetListNotifications, self).dispatch(*args, **kwargs)

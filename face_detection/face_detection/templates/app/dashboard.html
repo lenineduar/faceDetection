@@ -86,11 +86,7 @@
 						<div class="card-body">
 							<div class="pd-x-15 pb-3">
 								{% if camera.camera %}
-<<<<<<< HEAD
 								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="230" width="100%">
-=======
-								    <img src="{% url camera.url_stream %}" height="230" width="100%">
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 								{% else %}
 									<img src="{% static 'images/no_signal.jpg' %}" height="230" width="100%">
 							    {% endif %}
@@ -123,11 +119,7 @@
 						<div class="card-body">
 							<div class="pd-x-15 pb-3">
 								{% if camera.camera %}
-<<<<<<< HEAD
 								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="150" width="100%">
-=======
-								    <img src="{% url camera.url_stream %}" height="150" width="100%">
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 								{% else %}
 									<img src="{% static 'images/no_signal.jpg' %}" height="150" width="100%">
 							    {% endif %}
@@ -181,7 +173,6 @@
 {% endblock content %}
 
 {% block extra_js %}
-<<<<<<< HEAD
  <script src="http://localhost:5000/socket.io/socket.io.js"></script>
  <script src="{% static 'pkg/vue.js' %}"></script>
  <script src="{% static 'pkg/axios.js' %}"></script>
@@ -195,9 +186,4 @@
         cam1[2].src = 'data:image/jpeg;base64,' + data;
     });
  </script>
-=======
- <script src="{% static 'pkg/vue.js' %}"></script>
- <script src="{% static 'pkg/axios.js' %}"></script>
- <script src="{% static 'js/dashboard.js' %}"></script>
->>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 {% endblock extra_js %}
