@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cameras, Notifications
+from .models import Cameras, Notifications, Person
 
 class CamerasAdmin(admin.ModelAdmin):
     list_display = (
@@ -14,6 +14,19 @@ class CamerasAdmin(admin.ModelAdmin):
 
 admin.site.register(Cameras, CamerasAdmin)
 
+
+class PersonAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'fullname',
+        'is_white_list',
+        'is_black_list',
+        'created'
+    )
+    list_filter = ('id','fullname','is_white_list', 'is_black_list')
+    search_fields = ['id','fullname','is_white_list', 'is_black_list']
+
+admin.site.register(Person, PersonAdmin)
 
 class NotificationsAdmin(admin.ModelAdmin):
     list_display = (

@@ -10,7 +10,7 @@ from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from .utils import change_utc_date
 #from utils.cameras_discovery import discovery
 
-from .models import Cameras, Notifications
+from .models import Cameras, Notifications, Person
 
 
 #if sys.argv[1] == "runserver":
@@ -106,6 +106,45 @@ class DetailNotificationView(LoginRequiredMixin, DetailView):
 
         return context
 
+
+class EditNotificationView(LoginRequiredMixin, DetailView):
+    redirect_unauthenticated_users = True
+    template_name = "app/edit_notification.html"
+    model = Notifications
+
+    def get_context_data(self, **kwargs):
+        context = super(EditNotificationView, self).get_context_data(**kwargs)
+        self.object.is_ready = True
+        self.object.save()
+        context["notification"] = self.object
+        context["persons"] = Person.objects.filter()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        notification = get_object_or_404(Notifications, pk=kwargs['pk'])
+        person_name = request.POST.get("person_name","Desconocido")
+        whitelist = request.POST.get("whitelist", "")
+        blacklist = request.POST.get("blacklist", "")
+
+        if not person_name.lower().capitalize() == "Desconocido":
+            notification.person_name = person_name
+            person = Person.objects.filter(fullname=person_name)
+            w_list = True if whitelist == "on" else False
+            b_list = True if blacklist == "on" else False
+            if person:
+                person = person[0]
+            else:
+                person = Person(fullname=person_name)
+
+            person.is_white_list = w_list
+            person.is_black_list = b_list
+            person.save()
+            notification.save()
+
+        return redirect("notification", pk=notification.id)
+
+
 # -------------------------------------------------------
 # Api Section
 # -------------------------------------------------------
@@ -160,7 +199,7 @@ class APIGetNotification(LoginRequiredMixin, View):
         notification = get_object_or_404(Notifications, pk=kwargs['pk'])
         notif = {
             'id': notification.id,
-            'person_name': notification.person_name.upper(),
+            'person_name': notification.person_name,
             'is_ready': notification.is_ready,
             'created': change_utc_date(notification.created),
             'cam_description': notification.camera.description,

@@ -35,15 +35,16 @@ def run():
 
     xml_file = os.path.join(settings.APPS_DIR, 'fixtures/haarcascade_frontalface_default.xml')
     face_cascade = cv2.CascadeClassifier(xml_file)
+    cameras = list()
     cameradb = Cameras.objects.filter(is_active=True)
+    for camera in cameradb:
+        cap = cv2.VideoCapture(camera.src)
+        cameras.append(cap)
 
     while True:
-        for camera in cameradb:
-            response = requests.get("http://localhost:8000/frame/video/{}/".format(camera.pk))
-            data = response.json()
-            frame = json.loads(data)
-            if not frame == "error":
-                frame = numpy.asarray(frame["frame"], dtype=numpy.uint8)
+        for cap in cameras:
+            rval, frame = cap.read()
+            if rval:
                 frame=cv2.flip(frame,1,0)
 
                 #convertimos la imagen a blanco y negro    
@@ -71,23 +72,24 @@ def run():
                     # Escribiendo el nombre de la cara reconocida
                     # La variable cara tendra el nombre de la persona reconocida
                     cara = '%s' % (names[prediction[0]])
+                    name = cara if prediction[1]<100 else "Desconodido"
 
+                    '''
                     #Si la prediccion tiene una exactitud menor a 100 se toma como prediccion valida
                     if prediction[1]<100 :
                         #Ponemos el nombre de la persona que se reconoció
-                        cv2.putText(frame,'%s - %.0f' % (cara,prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
-                      
-                        retval, buffer = cv2.imencode('.png', frame)
-                        png_as_text = base64.b64encode(buffer).decode('ascii')
-                        #png_original = base64.b64decode(jpg_as_text).decode('ascii')
-                        set_notifications(cara, camera.pk, png_as_text)
-                        #En caso de que la cara sea de algun conocido se realizara determinadas accione          
-                          
-
+                        texto = '%s - %.0f' % (cara,prediction[1]) if prediction[1]<100 else "Desconocido"
+                        
                     #Si la prediccion es mayor a 100 no es un reconomiento con la exactitud suficiente
                     elif prediction[1]>101 and prediction[1]<500:           
                         #Si la cara es desconocida, poner desconocido
-                        cv2.putText(frame, 'Desconocido',(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))  
+                        texto = 'Desconocido'
+                    '''
+                    if prediction[1]<500:
+                        retval, buffer = cv2.imencode('.png', frame)
+                        png_as_text = base64.b64encode(buffer).decode('ascii')
+                        #png_original = base64.b64decode(jpg_as_text).decode('ascii')
+                        set_notifications(name, camera.pk, png_as_text)
 
                     #Mostramos la imagen
                     #cv2.imshow('OpenCV Reconocimiento facial', frame)

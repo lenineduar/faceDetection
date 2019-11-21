@@ -36,7 +36,7 @@
 								<tbody>
 									<tr><td>
 										<span class="tx-12">
-											Persona detectada: {{ object.person_name | upper }}
+											Persona detectada: {{ object.person_name }}
 										</span>
 
 									</td></tr>
@@ -50,6 +50,28 @@
 									        Fecha: {{ object.created }}
 									    </span>
 									</td></tr>
+									{% if object.get_person.is_person %}
+								    <tr><td>
+								      <div class="row">
+										<div class="col-6">
+										    {% if object.get_person.is_white_list %}
+										        <i class="typcn typcn-input-checked text-success"></i>
+										    {% else %}
+										        <i class="typcn typcn-delete text-danger"></i>
+										    {% endif %}
+										    Whitelist
+										</div>
+										<div class="col-6">
+										    {% if object.get_person.is_black_list %}
+										        <i class="typcn typcn-input-checked text-success"></i>
+										    {% else %}
+										        <i class="typcn typcn-delete text-danger"></i>
+										    {% endif %}
+										    Blacklist
+										</div>
+									  </div>
+									</td></tr>
+									{% endif %}
 									<tr><td></td></tr>
 								</tbody>
 							</table>
@@ -57,6 +79,7 @@
 					</div><!-- media-body -->
 				</div><!-- media -->
 			</div><!-- media-list -->
+			<a href="{% url 'edit_notification' object.id %}" class="btn btn-outline-light btn-block">Editar</a>
 		</div>
 	</div>
     <!-- END NOTIFICATIONS -->

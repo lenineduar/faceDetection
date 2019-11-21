@@ -25,3 +25,11 @@ class Notifications(models.Model):
     is_ready = models.BooleanField(default=False)
     image_capture = models.TextField(default='', blank = True, null=True)
     created = models.DateTimeField(default=timezone.now)
+
+    def get_person(self):
+        person = Person.objects.filter(fullname=self.person_name)
+        return {
+            'is_person': True if person else False,
+            'is_white_list': person[0].is_white_list if person else None,
+            'is_black_list': person[0].is_black_list if person else None,
+        }

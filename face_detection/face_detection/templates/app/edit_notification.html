@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+		<div class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title mg-b-20">Captura</h6>
+					<br/>
+					<p class="text-center">
+						{% if not object.image_capture%}
+							<img src="https://via.placeholder.com/500" alt="" width="60%">
+						{%  else %}
+						    <img src="data:image/png;base64,{{object.image_capture}}" alt="" width="60%">
+						{% endif %}	
+					</p>
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">
+			Editar Información Básica
+		</label>
+		<div>
+			<div class="az-media-list-reviews">
+				<div class="media">
+					<div class="media-body">
+						<p class="mg-b-0">
+							<table class="table mg-b-0">
+								<tbody>
+									<tr><td>
+									  <form action="{% url 'edit_notification' object.id %}" method="POST">
+									    {% csrf_token %}	
+										<div class="tx-12 pb-3">
+											<strong>Listado de Personas:</strong>
+											<select class="form-control select2" id="list_persons">
+								                <option label="Selecciona uno"></option>
+								                {% for person in persons%}
+								                <option value="{{person.fullname}}">
+								                	{{person.fullname}}
+								                </option>
+								                {% endfor %}
+								            </select>
+										</div>
+
+										<div class="tx-12 pb-3">
+											<strong>Persona detectada:</strong>
+											<input class="form-control" placeholder="Input box" type="text" value="{{ object.person_name }}" name="person_name"
+											id="person_name"> 
+										</div>
+										<div class="tx-12 pb-3">
+											<strong>Lista Blanco / Lista Negra:</strong>
+											<div class="row pt-1">
+												<div class="col-6 tx-12">
+													<label class="ckbox">
+										                <input type="checkbox" 
+										                  {% if object.get_person.is_white_list %}checked{% endif %} name="whitelist"
+										                ><span>Whitelist</span>
+										            </label>
+										        </div>
+										        <div class="col-6 tx-12">
+										            <label class="ckbox">
+										                <input type="checkbox" 
+										                  {% if object.get_person.is_black_list %}checked{% endif %} name="blacklist"
+										                ><span>Blacklist</span>
+										            </label>
+												</div>
+										    </div>
+									    </div>
+										<button type="submit" class="btn btn-outline-light btn-block">
+											Guardar
+									    </button>
+									  </form>
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									    	Lugar/Cámara: {{ object.camera.description }}
+									    </span>
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									        Fecha: {{ object.created }}
+									    </span>
+									</td></tr>
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+						</p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+			<a href="{% url 'notification' object.id %}" class="btn btn-block btn-info">Regresar</a>
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+    {% include "app/modals/camera_modals.html" %}
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_css %}
+    <link href="{% static 'azia_dashboard/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_js %}
+    <script src="{% static 'azia_dashboard/lib/select2/js/select2.min.js' %}"></script>
+    <script>
+      // Additional code for adding placeholder in search box of select2
+      (function($) {
+        var Defaults = $.fn.select2.amd.require('select2/defaults');
+
+        $.extend(Defaults.defaults, {
+          searchInputPlaceholder: ''
+        });
+
+        var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
+
+        var _renderSearchDropdown = SearchDropdown.prototype.render;
+
+        SearchDropdown.prototype.render = function(decorated) {
+
+          // invoke parent method
+          var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
+
+          this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
+
+          return $rendered;
+        };
+
+      })(window.jQuery);
+    </script>
+    <script>
+      	$(function(){
+	        'use strict'
+		    $(document).ready(function(){
+		        $('.select2').select2({
+		        	placeholder: 'Seleccione uno',
+		            searchInputPlaceholder: 'Search'
+		        });
+
+		        $('.select2-no-search').select2({
+		        	minimumResultsForSearch: Infinity,
+		            placeholder: 'Seleccione uno'
+		        });
+	        });
+	        $("#list_persons").change(function() {
+			  	var name = $("#list_persons").val();
+			  	$("#person_name").val(name);
+			});
+	    });
+	</script>
+{% endblock extra_js %}

@@ -23,7 +23,7 @@
 							  {% if notifications %}
 								{% for notification in notifications %}
 								<tr>
-									<td>{{ notification.person_name | upper }}</td>
+									<td>{{ notification.person_name }}</td>
 									<td class="tx-right tx-inverse font-weight-bold">
 										{{ notification.created }}
 									</td>
