@@ -20,6 +20,7 @@
 								</tr>
 							</thead>
 							<tbody>
+							  {% if notifications %}
 								{% for notification in notifications %}
 								<tr>
 									<td>{{ notification.person_name | upper }}</td>
@@ -46,6 +47,11 @@
 									</td>
 								</tr>
 								{% endfor %}
+							  {% else %}
+							    <tr>
+							    	<td colspan=5 class="text-center">No hay notificaciones</td>
+							    </tr>
+							  {% endif %}
 							</tbody>
 						</table>
 						{% if is_paginated %}

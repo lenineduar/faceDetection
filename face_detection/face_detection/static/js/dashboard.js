@@ -13,7 +13,7 @@ var app = new Vue({
         this.getNotifications();
         setInterval(function () {
           vue.getNotifications();
-        }, 5000); 
+        }, 5000);
     },
     methods: {
         clearGrid: function(){

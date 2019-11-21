@@ -10,6 +10,14 @@ class Cameras(models.Model):
     created = models.DateTimeField(default=timezone.now)
 
 
+class Person(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fullname = models.CharField(max_length=255, blank=True, null=True, default='')
+    is_white_list = models.BooleanField(default=False)
+    is_black_list = models.BooleanField(default=False)
+    created = models.DateTimeField(default=timezone.now)
+
+
 class Notifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     camera = models.ForeignKey(Cameras, on_delete=models.CASCADE,)

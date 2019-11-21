@@ -1,3 +1,5 @@
+
+import sys
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -6,8 +8,13 @@ from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from .utils import change_utc_date
+#from utils.cameras_discovery import discovery
 
 from .models import Cameras, Notifications
+
+
+#if sys.argv[1] == "runserver":
+#    discovery()
 
 
 # Create your views here.
@@ -55,6 +62,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         context["cameras"] = cameras
         context["nav_dashboard"] = "active"
+        context["cam_test"] = Cameras.objects.filter(is_active=True, pk=1).first()
 
         return context
 
@@ -101,6 +109,23 @@ class DetailNotificationView(LoginRequiredMixin, DetailView):
 # -------------------------------------------------------
 # Api Section
 # -------------------------------------------------------
+class APIGetCamerasActives(View):
+    def dispatch(self, *args, **kwargs):
+        return super(APIGetCamerasActives, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        cameras = []
+        camerasdb = Cameras.objects.filter(is_active=True)
+        for camdb in camerasdb:
+            cam = {
+               'id': camdb.id,
+               'src': camdb.src
+            }
+            cameras.append(cam)
+
+        return JsonResponse(cameras, safe=False)
+
+
 class APIGetListNotifications(LoginRequiredMixin, View):
     def dispatch(self, *args, **kwargs):
         return super(APIGetListNotifications, self).dispatch(*args, **kwargs)

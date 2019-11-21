@@ -86,7 +86,7 @@
 						<div class="card-body">
 							<div class="pd-x-15 pb-3">
 								{% if camera.camera %}
-								    <img src="{% url camera.url_stream %}" height="230" width="100%">
+								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="230" width="100%">
 								{% else %}
 									<img src="{% static 'images/no_signal.jpg' %}" height="230" width="100%">
 							    {% endif %}
@@ -119,7 +119,7 @@
 						<div class="card-body">
 							<div class="pd-x-15 pb-3">
 								{% if camera.camera %}
-								    <img src="{% url camera.url_stream %}" height="150" width="100%">
+								    <img class="camara_{{camera.id}}" src="{% static 'images/loading.gif' %}" height="150" width="100%">
 								{% else %}
 									<img src="{% static 'images/no_signal.jpg' %}" height="150" width="100%">
 							    {% endif %}
@@ -173,7 +173,17 @@
 {% endblock content %}
 
 {% block extra_js %}
+ <script src="http://localhost:5000/socket.io/socket.io.js"></script>
  <script src="{% static 'pkg/vue.js' %}"></script>
  <script src="{% static 'pkg/axios.js' %}"></script>
  <script src="{% static 'js/dashboard.js' %}"></script>
+ <script>
+    var cam1 = document.getElementsByClassName('camara_1');
+    var socket1 = io.connect('http://localhost:5000/cam1');
+    socket1.on('data', function(data) {
+        cam1[0].src = 'data:image/jpeg;base64,' + data;
+        cam1[1].src = 'data:image/jpeg;base64,' + data;
+        cam1[2].src = 'data:image/jpeg;base64,' + data;
+    });
+ </script>
 {% endblock extra_js %}
