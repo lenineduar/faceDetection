@@ -20,7 +20,10 @@
 								</tr>
 							</thead>
 							<tbody>
+<<<<<<< HEAD
 							  {% if notifications %}
+=======
+>>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 								{% for notification in notifications %}
 								<tr>
 									<td>{{ notification.person_name | upper }}</td>
@@ -47,11 +50,14 @@
 									</td>
 								</tr>
 								{% endfor %}
+<<<<<<< HEAD
 							  {% else %}
 							    <tr>
 							    	<td colspan=5 class="text-center">No hay notificaciones</td>
 							    </tr>
 							  {% endif %}
+=======
+>>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
 							</tbody>
 						</table>
 						{% if is_paginated %}
@@ -125,7 +131,10 @@
 		</div>
 	</div>
     <!-- END NOTIFICATIONS -->
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
     {% include "app/modals/camera_modals.html" %}
 </div><!-- az-content-body -->
 {% endblock content %}

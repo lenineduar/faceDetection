@@ -304,8 +304,12 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # ------------------------------------------------------------------------------
 
 CAMERAS_ACTIVE = env.int("CAMERAS_ACTIVE", 4)
+<<<<<<< HEAD
 MINIMUM_TIME_TO_NOTIFY = env.int("MINIMUM_TIME_TO_NOTIFY", 3*60) # 3 min
 
 # Resolution Camera
 WIDTH_RES = env.int("WIDTH_RES", 320)
 HEIGHT_RES = env.int("HEIGHT_RES", 240)
+=======
+MINIMUM_TIME_TO_NOTIFY = env.int("MINIMUM_TIME_TO_NOTIFY", 3*60) # 3 min
+>>>>>>> 7bedb08bc860f6609aefc8928107001da37344cd
