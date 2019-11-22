@@ -124,25 +124,62 @@ class EditNotificationView(LoginRequiredMixin, DetailView):
     def post(self, request, *args, **kwargs):
         notification = get_object_or_404(Notifications, pk=kwargs['pk'])
         person_name = request.POST.get("person_name","Desconocido")
-        whitelist = request.POST.get("whitelist", "")
-        blacklist = request.POST.get("blacklist", "")
 
         if not person_name.lower().capitalize() == "Desconocido":
-            notification.person_name = person_name
             person = Person.objects.filter(fullname=person_name)
-            w_list = True if whitelist == "on" else False
-            b_list = True if blacklist == "on" else False
-            if person:
-                person = person[0]
-            else:
+            if not person:
                 person = Person(fullname=person_name)
-
-            person.is_white_list = w_list
-            person.is_black_list = b_list
-            person.save()
-            notification.save()
+                person.save()
+        
+        notification.person_name = person_name
+        notification.save()
 
         return redirect("notification", pk=notification.id)
+
+
+class ListPersonsView(LoginRequiredMixin, ListView):
+    redirect_unauthenticated_users = True
+    template_name = "app/list_persons.html"
+    model = Person
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(ListPersonsView, self).get_context_data(**kwargs)
+        persons = Person.objects.all().order_by('-created')
+
+        paginator = Paginator(persons, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            paginated_list = paginator.page(page)
+        except PageNotAnInteger:
+            paginated_list = paginator.page(1)
+        except EmptyPage:
+            paginated_list = paginator.page(paginator.num_pages)
+
+        context["persons"] = paginated_list
+        context["nav_persons"] = "active"
+
+        return context
+
+
+class EditPersonView(LoginRequiredMixin, View):
+    redirect_unauthenticated_users = True
+
+    def post(self, request, *args, **kwargs):
+        person = get_object_or_404(Person, pk=kwargs['pk'])
+        person_name = request.POST.get("person_name", None)
+        is_white_list = request.POST.get("whitelist", False)
+        is_black_list = request.POST.get("blacklist", False)
+
+        if person_name:
+            person.fullname = person_name
+            person.is_white_list = True if is_white_list == "on" else False
+            person.is_black_list = True if is_black_list == "on" else False
+            person.save()
+
+        return redirect("list_persons")
+
 
 
 # -------------------------------------------------------
@@ -209,3 +246,20 @@ class APIGetNotification(LoginRequiredMixin, View):
         notification.save()
 
         return JsonResponse(notif, safe=False)
+
+
+class APIGetPerson(LoginRequiredMixin, View):
+    def dispatch(self, *args, **kwargs):
+        return super(APIGetPerson, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        person = get_object_or_404(Person, pk=kwargs['pk'])
+        p = {
+            'id': person.id,
+            'fullname': person.fullname,
+            'is_white_list': person.is_white_list,
+            'is_black_list': person.is_black_list,
+            'created': change_utc_date(person.created),
+        }
+
+        return JsonResponse(p, safe=False)

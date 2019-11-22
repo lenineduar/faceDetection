@@ -9,11 +9,14 @@ urlpatterns = [
     path("notification/<str:pk>", view=views.DetailNotificationView.as_view(), name="notification"),
     path("notification/edit/<str:pk>", view=views.EditNotificationView.as_view(), name="edit_notification"),
     
+    path("persons", view=views.ListPersonsView.as_view(), name="list_persons"),
+    path("person/edit/<str:pk>", view=views.EditPersonView.as_view(), name="edit_person"),
     
     #URLs para las API servicios
     path("get/cameras/actives", view=views.APIGetCamerasActives.as_view(), name="get_cameras_actives"),
     path("get/list/notifications", view=views.APIGetListNotifications.as_view(), name="get_list_notifications"),
     path("get/notification/<str:pk>/", view=views.APIGetNotification.as_view(), name="get_notification"),
+    path("get/person/<str:pk>/", view=views.APIGetPerson.as_view(), name="get_person"),
 
     # URLs del servicio de Streaming
     # path("video1/streaming", view=views_stream.Video1StreamingView, name="video1_streaming"),

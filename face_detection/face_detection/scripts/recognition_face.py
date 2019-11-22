@@ -72,7 +72,7 @@ def run():
                     # Escribiendo el nombre de la cara reconocida
                     # La variable cara tendra el nombre de la persona reconocida
                     cara = '%s' % (names[prediction[0]])
-                    name = cara if prediction[1]<100 else "Desconodido"
+                    name = cara if prediction[1]<100 else "Desconocido"
 
                     '''
                     #Si la prediccion tiene una exactitud menor a 100 se toma como prediccion valida
