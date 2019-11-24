@@ -76,18 +76,8 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ListNotificationsView, self).get_context_data(**kwargs)
         notifications = Notifications.objects.all().order_by('-created')
-
-        paginator = Paginator(notifications, self.paginate_by)
-        page = self.request.GET.get('page')
-
-        try:
-            paginated_list = paginator.page(page)
-        except PageNotAnInteger:
-            paginated_list = paginator.page(1)
-        except EmptyPage:
-            paginated_list = paginator.page(paginator.num_pages)
-
-        context["notifications"] = paginated_list
+        
+        context["notifications"] = notifications
         context["nav_notifications"] = "active"
 
         return context
@@ -146,18 +136,7 @@ class ListPersonsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ListPersonsView, self).get_context_data(**kwargs)
         persons = Person.objects.all().order_by('-created')
-
-        paginator = Paginator(persons, self.paginate_by)
-        page = self.request.GET.get('page')
-
-        try:
-            paginated_list = paginator.page(page)
-        except PageNotAnInteger:
-            paginated_list = paginator.page(1)
-        except EmptyPage:
-            paginated_list = paginator.page(paginator.num_pages)
-
-        context["persons"] = paginated_list
+        context["persons"] = persons
         context["nav_persons"] = "active"
 
         return context

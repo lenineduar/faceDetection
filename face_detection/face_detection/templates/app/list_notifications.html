@@ -25,36 +25,36 @@
 				            </a>
 			            </nav>
 		          	</div><!-- pd-10 -->
-					<div class="table-responsive mg-t-20">
+					<div class="table-responsive mg-t-20 pr-1"  v-show="show_all_list">
 						<!-- Show All List -->
-						<table class="table table-striped table-dashboard-two mg-b-0" v-if="show_all_list">
+						<table class="table table-striped table-dashboard-two mg-b-0" id="table_all">
 							<thead>
 								<tr>
-									<th class="wd-lg-25p">Persona detectada</th>
-									<th class="wd-lg-20p tx-right">Fecha</th>
-									<th class="wd-lg-25p tx-right">Ubicación</th>
-									<th class="wd-lg-15p tx-right">Detalles</th>
-									<th class="wd-lg-15p tx-right">Estatus</th>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-15p">Detalles</th>
+									<th class="wd-lg-10p">Estatus</th>
 								</tr>
 							</thead>
 							<tbody>
 							  {% if notifications %}
 								{% for notification in notifications %}
 								<tr>
-									<td>{{ notification.person_name }}</td>
-									<td class="tx-right tx-inverse font-weight-bold">
+									<td class="font-weight-bold">{{ notification.person_name }}</td>
+									<td class="tx-inverse">
 										{{ notification.created }}
 									</td>
-									<td class="tx-right tx-inverse">
+									<td class="tx-center tx-inverse">
 										{{ notification.camera.description }}
 									</td>
-									<td class="tx-right tx-danger">
+									<td class="tx-center tx-danger">
 									    <a href="javascript:void(0)"
 									        @click="getNotification('{{ notification.pk }}')">
 									    	Ver
 									    </a>
 									</td>
-									<td class="tx-right tx-inverse">
+									<td class="tx-inverse tx-center">
 										{% if notification.is_ready %}
 										    <i class="typcn typcn-input-checked text-success"></i> 
 										    <span class="text-success tx-10 font-weight-bold">Visto</span>
@@ -72,17 +72,19 @@
 							  {% endif %}
 							</tbody>
 						</table>
-
+					</div>
+                    
+                    <div class="table-responsive mg-t-20 pr-1" v-show="show_white_list">
 						<!-- Show White List -->
 						<table class="table table-striped table-dashboard-two mg-b-0" 
-						v-if="show_white_list">
+						 id="table_whitelist">
 							<thead>
 								<tr>
-									<th class="wd-lg-25p">Persona detectada</th>
-									<th class="wd-lg-20p tx-right">Fecha</th>
-									<th class="wd-lg-25p tx-right">Ubicación</th>
-									<th class="wd-lg-15p tx-right">Detalles</th>
-									<th class="wd-lg-15p tx-right">Estatus</th>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-15p">Detalles</th>
+									<th class="wd-lg-10p">Estatus</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -90,20 +92,20 @@
 								{% for notification in notifications %}
 									{% if notification.get_person.is_white_list %}
 									<tr>
-										<td>{{ notification.person_name }}</td>
-										<td class="tx-right tx-inverse font-weight-bold">
+										<td class="font-weight-bold">{{ notification.person_name }}</td>
+										<td class="tx-right tx-inverse">
 											{{ notification.created }}
 										</td>
-										<td class="tx-right tx-inverse">
+										<td class="tx-center tx-inverse">
 											{{ notification.camera.description }}
 										</td>
-										<td class="tx-right tx-danger">
+										<td class="tx-center tx-danger">
 										    <a href="javascript:void(0)"
 										        @click="getNotification('{{ notification.pk }}')">
 										    	Ver
 										    </a>
 										</td>
-										<td class="tx-right tx-inverse">
+										<td class="tx-center tx-inverse">
 											{% if notification.is_ready %}
 											    <i class="typcn typcn-input-checked text-success"></i> 
 											    <span class="text-success tx-10 font-weight-bold">Visto</span>
@@ -122,17 +124,19 @@
 							  {% endif %}
 							</tbody>
 						</table>
+                    </div>
 
+                    <div class="table-responsive mg-t-20 pr-1" v-show="show_black_list">
                         <!-- Show Black List -->
 						<table class="table table-striped table-dashboard-two mg-b-0" 
-						v-if="show_black_list">
+						 id="table_blacklist">
 							<thead>
 								<tr>
-									<th class="wd-lg-25p">Persona detectada</th>
-									<th class="wd-lg-20p tx-right">Fecha</th>
-									<th class="wd-lg-25p tx-right">Ubicación</th>
-									<th class="wd-lg-15p tx-right">Detalles</th>
-									<th class="wd-lg-15p tx-right">Estatus</th>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-15p">Detalles</th>
+									<th class="wd-lg-10p">Estatus</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -140,20 +144,20 @@
 								{% for notification in notifications %}
 									{% if notification.get_person.is_black_list %}
 									<tr>
-										<td>{{ notification.person_name }}</td>
-										<td class="tx-right tx-inverse font-weight-bold">
+										<td class="font-weight-bold">{{ notification.person_name }}</td>
+										<td class="tx-right tx-inverse">
 											{{ notification.created }}
 										</td>
-										<td class="tx-right tx-inverse">
+										<td class="tx-center tx-inverse">
 											{{ notification.camera.description }}
 										</td>
-										<td class="tx-right tx-danger">
+										<td class="tx-center tx-danger">
 										    <a href="javascript:void(0)"
 										        @click="getNotification('{{ notification.pk }}')">
 										    	Ver
 										    </a>
 										</td>
-										<td class="tx-right tx-inverse">
+										<td class="tx-center tx-inverse">
 											{% if notification.is_ready %}
 											    <i class="typcn typcn-input-checked text-success"></i> 
 											    <span class="text-success tx-10 font-weight-bold">Visto</span>
@@ -172,20 +176,7 @@
 							  {% endif %}
 							</tbody>
 						</table>
-						{% if is_paginated %}
-		                    <div class="list-group d-block">
-				              <br/>
-				              <ul class="pager text-right">
-				                {% if notifications.has_previous %}
-				                  <a class="btn btn-secondary" href="?page={{ notifications.previous_page_number }}">Anterior</a>
-				                {% endif %}
-				                {% if notifications.has_next %}
-				                  <a class="btn btn-success" href="?page={{ notifications.next_page_number }}">Siguiente</a>
-				                {% endif %}
-				              </ul>
-				            </div>
-		            	{% endif %}
-					</div><!-- table-responsive -->
+					</div>
 				</div><!-- card-dashboard-five -->
 			</div><!-- col -->
 		</div><!-- row -->
@@ -247,8 +238,49 @@
 </div><!-- az-content-body -->
 {% endblock content %}
 
+{% block extra_css %}
+    <link href="{% static 'azia_dashboard/lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
 {% block extra_js %}
  <script src="{% static 'pkg/vue.js' %}"></script>
  <script src="{% static 'pkg/axios.js' %}"></script>
  <script src="{% static 'js/list_notifications.js' %}"></script>
+
+ <script src="{% static 'azia_dashboard/lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/select2/js/select2.min.js' %}"></script>
+ <script>
+      $(function(){
+        'use strict'
+
+        $('#table_all').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          }
+        });
+
+        $('#table_whitelist').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          }
+        });
+
+        $('#table_blacklist').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          }
+        });
+        // Select2
+        $('.dataTables_length select').select2({ minimumResultsForSearch: Infinity });
+
+      });
+ </script>
 {% endblock extra_js %}
