@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left col-8">
+		<div class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title mg-b-20">Captura</h6>
+					<br/>
+					<p class="text-center">
+						<img id="image" src="data:image/png;base64,{{object.image_capture}}" alt="" width="60%" style="display:none">
+						<div id="editor"></div>
+					</p>
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right col-4">
+		<label class="az-content-label tx-base mg-b-25">
+			Imagen editada
+		</label>
+		<div>
+			<div class="az-media-list-reviews">
+				<div class="media">
+					<div class="media-body">
+						<p class="mg-b-0">
+						    <center>
+								<canvas id="preview"></canvas>
+							</center>
+						</p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+			<form action="{% url 'add_img_edit' object.id %}" method="POST">
+				{% csrf_token %}
+				<input class="form-control" placeholder="Nombre" type="text" name="person_name" id="person_name">
+				<input class="form-control" type="text" name="img" id="base64" 
+				style="display:none">
+				<br/>
+				<button class="btn btn-outline-light btn-block">Guardar</button>
+			</form>
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@2.3.0/dist/croppr.min.css" 
+    rel="stylesheet"/>
+{% endblock extra_css %}
+
+{% block extra_js %}
+	<script src="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@2.3.0/dist/croppr.min.js"></script>
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', () => {
+
+            // Input File
+            const inputImage = document.querySelector('#image');
+            // Nodo donde estará el editor
+            const editor = document.querySelector('#editor');
+            // El canvas donde se mostrará la previa
+            const miCanvas = document.querySelector('#preview');
+            // Contexto del canvas
+            const contexto = miCanvas.getContext('2d');
+            // Ruta de la imagen seleccionada
+            let urlImage = undefined;
+            
+            editor.innerHTML = '';
+            let cropprImg = document.createElement('img');
+            cropprImg.setAttribute('id', 'croppr');
+            editor.appendChild(cropprImg);
+
+            // Limpia la previa en caso que existiera algún elemento previo
+            contexto.clearRect(0, 0, miCanvas.width, miCanvas.height);
+
+            // Envia la imagen al editor para su recorte
+            document.querySelector('#croppr').setAttribute('src', inputImage.src);
+
+            // Crea el editor
+            new Croppr('#croppr', {
+                aspectRatio: 1,
+                startSize: [70, 70],
+                onCropEnd: recortarImagen
+            })
+
+             /**
+              * Método que recorta la imagen con las coordenadas proporcionadas con croppr.js
+              */
+             function recortarImagen(data) {
+                 // Variables
+                 const inicioX = data.x;
+                 const inicioY = data.y;
+                 const nuevoAncho = data.width;
+                 const nuevaAltura = data.height;
+                 const zoom = 1;
+                 let imagenEn64 = '';
+                 // La imprimo
+                 miCanvas.width = nuevoAncho/2;
+                 miCanvas.height = nuevaAltura/2;
+                 // La declaro
+                 let miNuevaImagenTemp = new Image();
+                 console.log(miNuevaImagenTemp);
+                 miNuevaImagenTemp.src = document.querySelector('.croppr-imageClipped').src;
+                 console.log(data);
+                 // Cuando la imagen se carge se procederá al recorte
+                 miNuevaImagenTemp.onload = function() {
+                     // Se recorta
+                     contexto.drawImage(miNuevaImagenTemp, inicioX, inicioY, nuevoAncho * zoom, nuevaAltura * zoom, 0, 0, nuevoAncho/2, nuevaAltura/2);
+                     // Se transforma a base64
+                     imagenEn64 = miCanvas.toDataURL("image/jpeg");
+                     // Mostramos el código generado
+                     //document.querySelector('#base64').val(imagenEn64);
+                     $('#base64').val(imagenEn64);
+                 }
+                 // Proporciona la imagen cruda, sin editarla por ahora
+             }
+         });
+	</script>
+{% endblock extra_js %}

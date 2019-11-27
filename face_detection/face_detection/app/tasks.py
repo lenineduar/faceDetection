@@ -1,11 +1,19 @@
+import cv2
+import os
+import numpy
+import requests
+import json
+import base64
+
 from django.conf import settings
 from django.utils import timezone
-import base64
 
 from face_detection.app.models import Cameras, Notifications
 
+
 def set_notifications(name, camara_id, image):
     camera = Cameras.objects.filter(pk=camara_id)
+    name = name.replace("_", " ")
     notifications = Notifications.objects.filter(person_name=name, camera=camera[0]).order_by("-created")
     current_time = timezone.now()
     if notifications:

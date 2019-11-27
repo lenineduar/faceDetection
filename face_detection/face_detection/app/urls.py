@@ -12,6 +12,8 @@ urlpatterns = [
     path("persons", view=views.ListPersonsView.as_view(), name="list_persons"),
     path("person/edit/<str:pk>", view=views.EditPersonView.as_view(), name="edit_person"),
     
+    path("add/image/edit/<str:pk>", view=views.AddImageToRecognitionView.as_view(), name="add_img_edit"),
+
     #URLs para las API servicios
     path("get/cameras/actives", view=views.APIGetCamerasActives.as_view(), name="get_cameras_actives"),
     path("get/list/notifications", view=views.APIGetListNotifications.as_view(), name="get_list_notifications"),

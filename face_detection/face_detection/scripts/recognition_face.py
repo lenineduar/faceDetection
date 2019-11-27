@@ -74,17 +74,6 @@ def run():
                     cara = '%s' % (names[prediction[0]])
                     name = cara if prediction[1]<100 else "Desconocido"
 
-                    '''
-                    #Si la prediccion tiene una exactitud menor a 100 se toma como prediccion valida
-                    if prediction[1]<100 :
-                        #Ponemos el nombre de la persona que se reconoció
-                        texto = '%s - %.0f' % (cara,prediction[1]) if prediction[1]<100 else "Desconocido"
-                        
-                    #Si la prediccion es mayor a 100 no es un reconomiento con la exactitud suficiente
-                    elif prediction[1]>101 and prediction[1]<500:           
-                        #Si la cara es desconocida, poner desconocido
-                        texto = 'Desconocido'
-                    '''
                     if prediction[1]<500:
                         retval, buffer = cv2.imencode('.png', frame)
                         png_as_text = base64.b64encode(buffer).decode('ascii')

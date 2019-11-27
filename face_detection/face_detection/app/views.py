@@ -1,5 +1,11 @@
-
+import io
+import os
 import sys
+import cv2
+import numpy
+import base64
+import threading
+from PIL import Image
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -7,13 +13,16 @@ from django.shortcuts import render, redirect
 from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
-from .utils import change_utc_date
+from .utils import change_utc_date, replace_special_character
 #from utils.cameras_discovery import discovery
 
 from .models import Cameras, Notifications, Person
 
 
 #if sys.argv[1] == "runserver":
+    #t = threading.Thread(target=recognition_face, args=(), kwargs={})
+    #t.setDaemon(True)
+    #t.start()
 #    discovery()
 
 
@@ -125,6 +134,53 @@ class EditNotificationView(LoginRequiredMixin, DetailView):
         notification.save()
 
         return redirect("notification", pk=notification.id)
+
+
+class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
+    redirect_unauthenticated_users = True
+    template_name = "app/edit_img_add.html"
+    model = Notifications
+
+    def get_context_data(self, **kwargs):
+        context = super(AddImageToRecognitionView, self).get_context_data(**kwargs)
+        context["notification"] = self.object
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        notification = get_object_or_404(Notifications, pk=kwargs['pk'])
+        img_width, img_height, size = 112, 92, 4
+        person_name = request.POST.get("person_name", None)
+        img = request.POST.get("img", None)
+
+        if not img or not person_name:
+            return redirect('edit_notification', pk=notification.id)
+        
+        person_name = replace_special_character(person_name)
+        person = Person.objects.filter(fullname=person_name)
+        if not person:
+            person = Person(fullname=person_name)
+            person.save()
+        
+        dir_faces = os.path.join(settings.MEDIA_ROOT, 'att_faces/orl_faces')
+        path = os.path.join(dir_faces, person_name.replace(" ","_"))
+
+        if not os.path.isdir(path):
+            os.mkdir(path)
+        
+        imgdata = base64.b64decode(img[23:])
+        image = Image.open(io.BytesIO(imgdata))
+        frame = numpy.array(image)
+        frame=cv2.flip(frame,1,0)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        face_resize = cv2.resize(frame, (img_width, img_height))
+        
+        pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
+            if n[0]!='.' ]+[0])[-1] + 1
+
+        cv2.imwrite('%s/%s.jpg' % (path, pin), face_resize)
+    
+        return redirect("dashboard")
 
 
 class ListPersonsView(LoginRequiredMixin, ListView):
