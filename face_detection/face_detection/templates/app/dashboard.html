@@ -178,12 +178,16 @@
  <script src="{% static 'pkg/axios.js' %}"></script>
  <script src="{% static 'js/dashboard.js' %}"></script>
  <script>
-    var cam1 = document.getElementsByClassName('camara_1');
-    var socket1 = io.connect('http://localhost:5000/cam1');
-    socket1.on('data', function(data) {
-        cam1[0].src = 'data:image/jpeg;base64,' + data;
-        cam1[1].src = 'data:image/jpeg;base64,' + data;
-        cam1[2].src = 'data:image/jpeg;base64,' + data;
-    });
+ 	var cant_cam = parseInt("{{ cam_count }}");
+ 	var socket = [];
+ 	for (var i = 0; i <= cant_cam; i++){
+ 		var cam = document.getElementsByClassName('camara_'+i.toString());
+	    socket[i] = io.connect('http://localhost:5000/cam'+i.toString());
+	    socket[i].on('data', function(data) {
+	        cam[0].src = 'data:image/jpeg;base64,' + data;
+	        cam[1].src = 'data:image/jpeg;base64,' + data;
+	        cam[2].src = 'data:image/jpeg;base64,' + data;
+	    });
+ 	}
  </script>
 {% endblock extra_js %}

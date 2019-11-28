@@ -20,7 +20,7 @@ class Person(models.Model):
 
 class Notifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    camera = models.ForeignKey(Cameras, on_delete=models.CASCADE,)
+    camera_description = models.CharField(max_length=255, blank=True, null=True, default='')
     person_name = models.CharField(max_length=255, blank=True, null=True, default='')
     is_ready = models.BooleanField(default=False)
     image_capture = models.TextField(default='', blank = True, null=True)

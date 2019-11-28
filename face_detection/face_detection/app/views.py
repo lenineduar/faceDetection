@@ -66,8 +66,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             cameras.append(cam)
 
         context["cameras"] = cameras
+        context["cam_count"] = Cameras.objects.filter(is_active=True).count()
         context["nav_dashboard"] = "active"
-        context["cam_test"] = Cameras.objects.filter(is_active=True, pk=1).first()
 
         return context
 
@@ -248,7 +248,7 @@ class APIGetListNotifications(LoginRequiredMixin, View):
                 'person_name': notification.person_name.upper(),
                 'is_ready': notification.is_ready,
                 'created': change_utc_date(notification.created),
-                'cam_description': notification.camera.description
+                'cam_description': notification.camera_description
             }
             info.append(notif)
 
@@ -270,7 +270,7 @@ class APIGetNotification(LoginRequiredMixin, View):
             'person_name': notification.person_name,
             'is_ready': notification.is_ready,
             'created': change_utc_date(notification.created),
-            'cam_description': notification.camera.description,
+            'cam_description': notification.camera_description,
             'image': 'data:image/png;base64,%s' % (notification.image_capture) if notification.image_capture else ''
         }
         notification.is_ready = True

@@ -31,12 +31,12 @@ admin.site.register(Person, PersonAdmin)
 class NotificationsAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'camera',
+        'camera_description',
         'person_name',
         'is_ready',
         'created'
     )
-    list_filter = ('id','camera','person_name','is_ready')
-    search_fields = ['id','camera','person_name','is_ready']
+    list_filter = ('id','camera_description','person_name','is_ready')
+    search_fields = ['id','camera_description','person_name','is_ready']
 
 admin.site.register(Notifications, NotificationsAdmin)
