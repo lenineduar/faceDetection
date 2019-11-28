@@ -1,25 +1,52 @@
-// Configure Canvas
-const { Image } = require('canvas');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { document } = (new JSDOM(`...`)).window;
-
 const app = require('express')(),
   server = require('http').Server(app),
   io = require('socket.io')(server),
   rtsp = require('rtsp-ffmpeg');
 server.listen(5000);
 
-var request = require('request');
-request('http://localhost:8000/get/cameras/actives', function (error, response, body) {
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
-  var content = JSON.parse(body)
-  
+// Descubrimiento de cámara
+const onvif = require('node-onvif');
+
+var cant = 0;
+global.uri = [];
+var error = false;
+console.log('Start the discovery process.');
+onvif.startProbe().then((device_info_list) => {
+  //console.log(device_info_list.length + ' devices were found.');
+  // Show the device name and the URL of the end point.
+  cant = device_info_list.length;
+  var i = 0;
+  var uri = [];
+  device_info_list.forEach((info) => {
+    let device = new onvif.OnvifDevice({
+      xaddr: info.xaddrs[0],
+      user : 'admin',
+      pass : 'admin'
+    });
+    device.init().then(() => {
+      // Get the UDP stream URL
+      let url = device.getUdpStreamUrl();
+      uri[i] = url.slice(0,7)+"admin:admin@"+url.slice(7);
+      i++;
+    }).catch((error) => {
+      console.error(error);
+      error = true;
+    });
+  });
+  // Esperar 5 seg. para crear el websocket
+  setTimeout(function(){
+    ServerStream(uri);
+  },5000);
+}).catch((error) => {
+  console.error(error);
+  error = true;
+});
+// Fin del Descubrimiento
+
+function ServerStream(uri){
   var cams = [];
-  for (i = 0; i < content.length; i++ ){
-    cams[i] = content[i].src
+  for (i = 0; i < uri.length; i++ ){
+    cams[i] = uri[i];
   }
 
   var camaras = cams.map(function(uri, i) {
@@ -41,14 +68,11 @@ request('http://localhost:8000/get/cameras/actives', function (error, response, 
       var pipeStream = function(data) {
         var bytes = new Uint8Array(data);
         wsocket.emit('data', data.toString("base64"));
-        //image = changeResolution(data, 320, 240);
-        //console.log(image);
-        //wsocket.emit('data', image);
       };
       camStream.on('data', pipeStream);
 
       wsocket.on('disconnect', function() {
-        console.log('disconnected from /cam' + i);
+      console.log('disconnected from /cam' + i);
         camStream.removeListener('data', pipeStream);
       });
     });
@@ -57,40 +81,12 @@ request('http://localhost:8000/get/cameras/actives', function (error, response, 
   io.on('connection', function(socket) {
     socket.emit('start', cams.length);
   });
-})
 
-function changeResolution(base64, maxWidth, maxHeight){
- // Max size for thumbnail
-  if(typeof(maxWidth) === 'undefined')  maxWidth = 500;
-  if(typeof(maxHeight) === 'undefined')  maxHeight = 500;
-
-  // Create and initialize two canvas
-  var canvas = document.createElement("canvas");
-  var ctx = canvas.getContext("2d");
-  var canvasCopy = document.createElement("canvas");
-  var copyContext = canvasCopy.getContext("2d");
-
-  // Create original image
-  var img = new Image();
-  img.src = base64;
-
-  // Determine new ratio based on max size
-  var ratio = 1;
-  if(img.width > maxWidth)
-    ratio = maxWidth / img.width;
-  else if(img.height > maxHeight)
-    ratio = maxHeight / img.height;
-
-  // Draw original image in second canvas
-  canvasCopy.width = img.width;
-  canvasCopy.height = img.height;
-  copyContext.drawImage(img, 0, 0);
-
-  // Copy and resize second canvas to first canvas
-  canvas.width = img.width * ratio;
-  canvas.height = img.height * ratio;
-  ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
-
-  return canvas.toDataURL();
-
+  app.get('/cameras', function (req, res) {
+    let url_stream = {
+        'uri': uri,
+    };
+    res.send(url_stream);
+  });
+  console.log('Start server stream.');
 }

@@ -14,16 +14,12 @@ from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from django.views.generic import TemplateView, DetailView, View, ListView
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from .utils import change_utc_date, replace_special_character
-#from utils.cameras_discovery import discovery
+from .utils import discovery
 
 from .models import Cameras, Notifications, Person
 
-
-#if sys.argv[1] == "runserver":
-    #t = threading.Thread(target=recognition_face, args=(), kwargs={})
-    #t.setDaemon(True)
-    #t.start()
-#    discovery()
+if sys.argv[1] == "runserver":
+    discovery()
 
 
 # Create your views here.
