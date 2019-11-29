@@ -88,5 +88,6 @@ function ServerStream(uri){
     };
     res.send(url_stream);
   });
-  console.log('Start server stream.');
+  console.log('Start stream server.');
+  console.log('Now you can start the web server.');
 }

@@ -135,7 +135,7 @@
 
 	<!-- NOTIFICATIONS -->
 	<div class="az-content-body-right">
-		<label class="az-content-label tx-base mg-b-25">
+		<label class="az-content-label tx-base mg-b-10">
 			Notificaciones <span class="text-danger tx-9" v-if="not_read !== 0">[[ not_read ]] Nuevos</span>
 		</label>
 		<div v-if="!emptyNotifications">
@@ -145,18 +145,17 @@
 						<div class="d-flex justify-content-between">
 							<div>
 								<small class="text-danger" v-if="!notification.is_ready">Nueva detección</small>
-								<h6 class="mg-b-0">Detectado: [[ notification.person_name ]]</h6>
+								<h6 class="mg-b-0 tx-12">Detectado: [[ notification.person_name ]]</h6>
 								<div class="az-star-group">
 									<span>[[ notification.created ]]</span>
 								</div><!-- star-group -->
 							</div>
 						</div>
-						<p class="mg-b-0">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a v-bind:href="urlPage(notification.id)">Ver más</a></p>
-						<hr>
+						<p class="mg-b-0 tx-12">Se ha detectado a [[ notification.person_name ]] por [[ notification.cam_description ]]... <a v-bind:href="urlPage(notification.id)">Ver más</a></p>
+						<hr style="margin: 5px 0px">
 					</div><!-- media-body -->
 				</div><!-- media -->
 			</div><!-- media-list -->
-			<br/>
 			<a href="{% url 'list_notifications' %}" class="btn btn-outline-light btn-block">Ver todas las notificaciones</a>
 		</div>
 		<div v-if="emptyNotifications">

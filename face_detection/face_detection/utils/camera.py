@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from threading import Thread, Lock
 from django.conf import settings
 
-
+'''
 class CameraStream(object):
     def __init__(self, src=0, width=None , height=None):
         self.video = cv2.VideoCapture(src)
@@ -39,14 +39,12 @@ class CameraStream(object):
 '''
 class CameraStream(object):
    
-    def __init__(self, src=0, width=None , height=None):
+    def __init__(self, src=0):
         self.stream = cv2.VideoCapture(src)
-        if width is not None and height is not None:
-            self.stream.set(3, width)
-            self.stream.set(4, height)
         (self.grabbed, self.frame) = self.stream.read()
         self.started = False
         self.read_lock = Lock()
+        self.start()
         
     def start(self):
         if self.started:
@@ -60,7 +58,6 @@ class CameraStream(object):
     def update(self):
         while self.started:
             (grabbed, frame) = self.stream.read()
-            frame = cv2.resize(frame,(160, 120), interpolation = cv2.INTER_CUBIC)
             self.read_lock.acquire()
             self.grabbed, self.frame = grabbed, frame
             self.read_lock.release()
@@ -81,4 +78,3 @@ class CameraStream(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.stream.stop()
-'''
