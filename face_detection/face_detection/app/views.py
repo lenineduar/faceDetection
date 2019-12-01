@@ -132,6 +132,16 @@ class EditNotificationView(LoginRequiredMixin, DetailView):
         return redirect("notification", pk=notification.id)
 
 
+class DeleteNotificationsView(LoginRequiredMixin, View):
+    redirect_unauthenticated_users = True
+
+    def dispatch(self, *args, **kwargs):
+        notification = get_object_or_404(Notifications, pk=kwargs['pk'])
+        notification.delete()
+
+        return redirect("list_notifications")
+
+
 class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
     redirect_unauthenticated_users = True
     template_name = "app/edit_img_add.html"

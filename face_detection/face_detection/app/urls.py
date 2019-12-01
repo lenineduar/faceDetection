@@ -8,6 +8,7 @@ urlpatterns = [
     path("notifications", view=views.ListNotificationsView.as_view(), name="list_notifications"),
     path("notification/<str:pk>", view=views.DetailNotificationView.as_view(), name="notification"),
     path("notification/edit/<str:pk>", view=views.EditNotificationView.as_view(), name="edit_notification"),
+    path("notification/delete/<str:pk>", view=views.DeleteNotificationsView.as_view(), name="del_notification"),
     
     path("persons", view=views.ListPersonsView.as_view(), name="list_persons"),
     path("person/edit/<str:pk>", view=views.EditPersonView.as_view(), name="edit_person"),

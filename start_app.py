@@ -14,6 +14,6 @@ if __name__ == '__main__':
     time.sleep(5)
     print("Web Server start")
 
-    #subprocess.Popen([sys.executable, '3run_recognition.py'],
-    #	stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    #print("Recognition start")
+    subprocess.Popen([sys.executable, '3run_recognition.py'],
+    	stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    print("Recognition start")

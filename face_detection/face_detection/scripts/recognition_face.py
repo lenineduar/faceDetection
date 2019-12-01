@@ -62,6 +62,7 @@ def run():
 
                     if face_ok:
                         face_resize = cv2.resize(face, (im_width, im_height))
+                        cv2.rectangle(frame, (startX, startY), (endX,endY), (0,0,255), 3)
                         
                         #*****************************Reconocimiento de lentes***********************************
                         rects = detector(gray, 1)
@@ -99,13 +100,11 @@ def run():
                         if prediction[1]<=130: #Rostro identificado
             #                #Dibujamos un rectangulo en las coordenadas del rostro
             #            #Ponemos el nombre de la persona que se reconoció
-                            cv2.rectangle(frame, (startX, startY), (endX,endY), (0,255,0), 3)
                             cv2.putText(frame,'%s' % (cara),(startX+20,startY-10),cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 255))
                             cv2.putText(frame,text,(endX-20,startY-10),cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 255))
                               
             #    #        #Si la prediccion es mayor a 100 no es un reconomiento con la exactitud suficiente
                         else:#if #prediction[1]>101 and prediction[1]<500: 
-                            cv2.rectangle(frame, (startX, startY), (endX,endY), (0,0,255), 3)
                             cv2.putText(frame, 'Desconocido',(startX+20,startY-10), cv2.FONT_HERSHEY_PLAIN,1,(0,0,255))
                             
                     #Mostramos la imagen

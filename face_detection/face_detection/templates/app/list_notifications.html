@@ -33,8 +33,8 @@
 									<th class="wd-lg-30p">Persona detectada</th>
 									<th class="wd-lg-25p">Fecha</th>
 									<th class="wd-lg-20p">Ubicación</th>
-									<th class="wd-lg-15p">Detalles</th>
 									<th class="wd-lg-10p">Estatus</th>
+									<th class="wd-lg-15p">Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -48,20 +48,22 @@
 									<td class="tx-center tx-inverse">
 										{{ notification.camera_description }}
 									</td>
-									<td class="tx-center tx-danger">
-									    <a href="javascript:void(0)"
-									        @click="getNotification('{{ notification.pk }}')">
-									    	Ver
-									    </a>
-									</td>
 									<td class="tx-inverse tx-center">
 										{% if notification.is_ready %}
 										    <i class="typcn typcn-input-checked text-success"></i> 
-										    <span class="text-success tx-10 font-weight-bold">Visto</span>
+										    <span class="text-success tx-11 font-weight-bold">Visto</span>
 										{% else %}
 										    <i class="typcn typcn-delete text-danger"></i>
-										    <span class="text-danger tx-10 font-weight-bold">Nuevo</span>
+										    <span class="text-danger tx-11 font-weight-bold">Nuevo</span>
 										{% endif %}
+									</td>
+									<td class="tx-center">
+									    <a class="text-success tx-11" href="javascript:void(0)"
+									        @click="getNotification('{{ notification.pk }}')">
+									    	Ver
+									    </a>
+									     | 
+									    <a class="text-danger tx-11" href="{% url 'del_notification' notification.id %}">Eliminar</a>
 									</td>
 								</tr>
 								{% endfor %}

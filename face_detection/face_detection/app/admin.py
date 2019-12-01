@@ -23,7 +23,7 @@ class PersonAdmin(admin.ModelAdmin):
         'is_black_list',
         'created'
     )
-    list_filter = ('id','fullname','is_white_list', 'is_black_list')
+    list_filter = ('is_white_list', 'is_black_list')
     search_fields = ['id','fullname','is_white_list', 'is_black_list']
 
 admin.site.register(Person, PersonAdmin)
@@ -36,7 +36,7 @@ class NotificationsAdmin(admin.ModelAdmin):
         'is_ready',
         'created'
     )
-    list_filter = ('id','camera_description','person_name','is_ready')
+    list_filter = ('camera_description','is_ready')
     search_fields = ['id','camera_description','person_name','is_ready']
 
 admin.site.register(Notifications, NotificationsAdmin)
