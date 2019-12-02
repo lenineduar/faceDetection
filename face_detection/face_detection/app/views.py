@@ -168,10 +168,6 @@ class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
             person = Person(fullname=person_name)
             person.save()
 
-        xml_file = os.path.join(settings.APPS_DIR,
-            'fixtures/haarcascade_frontalface_default.xml')
-        face_cascade = cv2.CascadeClassifier(xml_file)
-
         dir_faces = os.path.join(settings.MEDIA_ROOT, 'att_faces/orl_faces')
         path = os.path.join(dir_faces, person_name.replace(" ","_"))
 
@@ -181,21 +177,12 @@ class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
         imgdata = base64.b64decode(img[23:])
         image = Image.open(io.BytesIO(imgdata))
         frame = numpy.array(image)
-        frame=cv2.flip(frame,1,0)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
-        faces = face_cascade.detectMultiScale(mini)
-        faces = sorted(faces, key=lambda x: x[3])
-        if faces:
-            face_i = faces[0]
-            (x, y, w, h) = [v * size for v in face_i]
-            face = gray[y:y + h, x:x + w]
-            face_resize = cv2.resize(face, (img_width, img_height))
-        
-            pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
-                 if n[0]!='.' ]+[0])[-1] + 1
+        face_resize = cv2.resize(gray, (img_width, img_height))
+        pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
+            if n[0]!='.' ]+[0])[-1] + 1
 
-            cv2.imwrite('%s/%s.jpg' % (path, pin), face_resize)
+        cv2.imwrite('%s/%s.jpg' % (path, pin), face_resize)
     
         return redirect("dashboard")
 

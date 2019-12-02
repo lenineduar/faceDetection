@@ -108,8 +108,8 @@ def get_centers(img, landmarks):
         
         pts = np.vstack((LEFT_EYE_CENTER,RIGHT_EYE_CENTER))
         cv2.polylines(img, [pts], False, (255,0,0), 1) #画回归线
-        cv2.circle(img, (LEFT_EYE_CENTER[0],LEFT_EYE_CENTER[1]), 3, (0, 0, 255), -1)
-        cv2.circle(img, (RIGHT_EYE_CENTER[0],RIGHT_EYE_CENTER[1]), 3, (0, 0, 255), -1)
+        #cv2.circle(img, (LEFT_EYE_CENTER[0],LEFT_EYE_CENTER[1]), 3, (0, 0, 255), -1)
+        #cv2.circle(img, (RIGHT_EYE_CENTER[0],RIGHT_EYE_CENTER[1]), 3, (0, 0, 255), -1)
         
         return LEFT_EYE_CENTER, RIGHT_EYE_CENTER
 

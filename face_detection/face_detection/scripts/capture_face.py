@@ -3,12 +3,16 @@ import os
 import numpy
 import sys
 from django.conf import settings
+from utils.camera import CameraStream
+from face_detection.app.models import Cameras
+from face_detection.app.utils import replace_special_character
 
 def run(*args):
-    if args[0]:
-        nombre = args[0]
+    nombre = input('Introduzca el nombre: ')
+    if not nombre == '':
+        nombre = replace_special_character(nombre)
         dir_faces = os.path.join(settings.MEDIA_ROOT, 'att_faces/orl_faces')
-        path = os.path.join(dir_faces, nombre)
+        path = os.path.join(dir_faces, nombre.replace(" ","_"))
 
         #Tamaño para reducir a miniaturas las fotografias
         size = 4
@@ -20,7 +24,10 @@ def run(*args):
         #cargamos la plantilla e inicializamos la webcam
         xml_file = os.path.join(settings.APPS_DIR, 'fixtures/haarcascade_frontalface_default.xml')
         face_cascade = cv2.CascadeClassifier(xml_file)
-        cap = cv2.VideoCapture(0)
+
+        cameradb = Cameras.objects.filter(is_active=True).first()
+
+        cap = CameraStream(cameradb.src)
 
         img_width, img_height = 112, 92
 
@@ -28,7 +35,7 @@ def run(*args):
         count = 0
         while count < 100:
             #leemos un frame y lo guardamos
-            rval, img = cap.read()
+            img = cap.read()
             img = cv2.flip(img, 1, 0)
 
             #convertimos la imagen a blanco y negro
@@ -72,7 +79,8 @@ def run(*args):
             key = cv2.waitKey(10)
             if key == 27:
                 cv2.destroyAllWindows()
+                cap.stop()
                 break
-    
+        cap.stop()
     else:
         print ("Se requiere nombre del sujeto")

@@ -51,13 +51,12 @@
 {% endblock content %}
 
 {% block extra_css %}
-    <link href="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@2.3.0/dist/croppr.min.css" 
-    rel="stylesheet"/>
+    <link href="{% static 'pkg/croppr.css' %}" rel="stylesheet"/>
 {% endblock extra_css %}
 
 {% block extra_js %}
-	<script src="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@2.3.0/dist/croppr.min.js"></script>
-	<script type="text/javascript">
+    <script src="{% static 'pkg/croppr.js' %}"></script>
+    <script type="text/javascript">
 		document.addEventListener('DOMContentLoaded', () => {
 
             // Input File

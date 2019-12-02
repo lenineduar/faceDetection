@@ -65,7 +65,7 @@ def run():
                         cv2.rectangle(frame, (startX, startY), (endX,endY), (0,0,255), 3)
                         
                         #*****************************Reconocimiento de lentes***********************************
-                        rects = detector(gray, 1)
+                        '''rects = detector(gray, 1)
 
                         for i, rect in enumerate(rects):
                             x_face = rect.left()
@@ -88,7 +88,7 @@ def run():
                                     (x_face + 100, y_face - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2, cv2.LINE_AA)
                             else:
-                                continue
+                                continue'''
 
 
                         # Se realiza la predección
@@ -108,7 +108,7 @@ def run():
                             cv2.putText(frame, 'Desconocido',(startX+20,startY-10), cv2.FONT_HERSHEY_PLAIN,1,(0,0,255))
                             
                     #Mostramos la imagen
-                cv2.imshow('OpenCV Reconocimiento facial', frame)
+                #cv2.imshow('OpenCV Reconocimiento facial', frame)
 
         #Si se presiona la tecla ESC se cierra el programa
         key = cv2.waitKey(10)
