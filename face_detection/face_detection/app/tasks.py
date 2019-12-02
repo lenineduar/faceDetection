@@ -17,10 +17,14 @@ def set_notifications(name, camara_id, image):
     notifications = Notifications.objects.filter(
         person_name=name, camera_description=camera[0].description).order_by("-created")
     current_time = timezone.now()
+    if name == "Desconocido":
+        minimum_time = settings.MINIMUM_TIME_TO_NOTIFY_UNKNOW
+    else:
+        minimum_time = settings.MINIMUM_TIME_TO_NOTIFY
     if notifications:
         last_notification = notifications.first()
         time_elapsed = (current_time - last_notification.created).total_seconds()
-        if time_elapsed > settings.MINIMUM_TIME_TO_NOTIFY:
+        if time_elapsed > minimum_time:
             new_notification = Notifications(
                 person_name = name,
                 camera_description=camera[0].description,
