@@ -8,6 +8,7 @@ import base64
 from django.conf import settings
 from django.utils import timezone
 
+from face_detection.app.utils import EMail
 from face_detection.app.models import Cameras, Notifications
 
 
@@ -38,5 +39,33 @@ def set_notifications(name, camara_id, image):
             image_capture=image
         )
         new_notification.save()
+
+    #send_mail_notification(new_notification)
+
+    return None
+
+def send_mail_notification(notification):
+    try:
+        ctx = {
+            'notification': notification,
+            'admin': settings.EMAIL_NOTIFY_DETECTION,
+        }
+
+        # Send the Email
+        email = EMail(
+            to=settings.EMAIL_NOTIFY_DETECTION,
+            subject="Nueva Detección",
+        )
+
+        email.text('app/emails/nueva_deteccion.txt', ctx)
+        email.html('app/emails/nueva_deteccion.html', ctx)
+        email.send()
+
+    except Exception as e:
+        print("No se envió")
+        import pdb; pdb.set_trace()
+        pass
+
+    print("Se envió")
 
     return None

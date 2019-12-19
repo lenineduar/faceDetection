@@ -5,8 +5,10 @@ import cv2
 import numpy
 import base64
 import threading
+import subprocess
 from PIL import Image
 from django.conf import settings
+from django.views.decorators import gzip
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
@@ -15,6 +17,7 @@ from django.views.generic import TemplateView, DetailView, View, ListView
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from .utils import change_utc_date, replace_special_character
 from .utils import discovery
+from .views_streaming import init_capture
 
 from .models import Cameras, Notifications, Person
 
@@ -76,7 +79,6 @@ class ListNotificationsView(LoginRequiredMixin, ListView):
     redirect_unauthenticated_users = True
     template_name = "app/list_notifications.html"
     model = Notifications
-    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(ListNotificationsView, self).get_context_data(**kwargs)
@@ -191,7 +193,6 @@ class ListPersonsView(LoginRequiredMixin, ListView):
     redirect_unauthenticated_users = True
     template_name = "app/list_persons.html"
     model = Person
-    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(ListPersonsView, self).get_context_data(**kwargs)
@@ -218,6 +219,45 @@ class EditPersonView(LoginRequiredMixin, View):
             person.save()
 
         return redirect("list_persons")
+
+
+class CaptureFaceNameView(LoginRequiredMixin, TemplateView):
+    redirect_unauthenticated_users = True
+    template_name = "app/capture_face_name.html"
+    model = Person
+
+    def get_context_data(self, **kwargs):
+        context = super(CaptureFaceNameView, self).get_context_data(**kwargs)
+        persons = Person.objects.all().order_by('-created')
+        cameras =Cameras.objects.filter(is_active=True)
+
+        context["persons"] = persons
+        context["cameras"] = cameras
+        context["nav_capture_video"] = "active"
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        person_name = request.POST.get("person_name", None)
+        camara_id = request.POST.get("camara_id", None)
+
+        if person_name is None or camara_id is None:
+            data = {
+                'status': 'error'
+            }
+        else:
+            person = Person.objects.filter(fullname=person_name)
+            if not person:
+                person = Person()
+                person.fullname = person_name
+                person.save()
+                
+            data = {
+                'status': 'success'
+            }
+            init_capture(camara_id, person_name)
+
+        return JsonResponse(data, safe=False)
 
 
 
@@ -302,3 +342,19 @@ class APIGetPerson(LoginRequiredMixin, View):
         }
 
         return JsonResponse(p, safe=False)
+
+
+class APIRunCaptureFace(LoginRequiredMixin, View):
+    def dispatch(self, *args, **kwargs):
+        return super(APIRunCaptureFace, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        command = r'C:\Users\demofd\Desktop\face_detection\env\Scripts\activate && cd C:\Users\demofd\Desktop\face_detection\face_detection && python manage.py runscript capture_face'
+        resultado = subprocess.run(command, shell=True)
+        resultado.check_returncode()
+        
+        data = {
+            'status': 'OK'
+        }
+
+        return JsonResponse(data, safe=False)

@@ -222,6 +222,14 @@ X_FRAME_OPTIONS = "DENY"
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
 )
+EMAIL_USE_TLS = True
+EMAIL_HOST = env.str("EMAIL_HOST", default="localhost")
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
+EMAIL_PORT = env.int("EMAIL_PORT", default=1025)
+EMAIL_USE_TLS = True
+EMAIL_NOTIFY_DETECTION = env.str("EMAIL_NOTIFY_DETECTION", default="admin@example.com")
+EMAIL_FROM_ADDR = env.str("EMAIL_FROM_ADDR", default="notificacion@face_detection.com")
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 

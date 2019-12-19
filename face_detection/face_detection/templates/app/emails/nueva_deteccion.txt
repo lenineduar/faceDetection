@@ -1,0 +1,4 @@
+{% load i18n %}
+Hola {{ admin }},
+
+Se ha detectado ha {{ notification.person_name }}, por {{ notification.description }}. Fecha: {{ notification.created }}

@@ -42,6 +42,9 @@
         <a href="{% url 'list_persons' %}" class="nav-link {{ nav_persons }}">
           <i class="typcn typcn-th-list"></i>
         </a>
+        <a href="{% url 'capture_face_name' %}" class="nav-link {{ nav_capture_video }}">
+          <i class="typcn typcn-video"></i>
+        </a>
       </nav>
       <div class="az-iconbar-bottom">
         <a href="" class="az-iconbar-help"><i class="far fa-question-circle"></i></a>
@@ -58,10 +61,10 @@
             <img src="{% static 'images/face_detection.png' %}" alt="" width="20%">
           </div><!-- az-header-center -->
           <div class="az-header-right">
-            <!--
-            <div class="az-header-notification">
-              <a href="" class="new"><i class="typcn typcn-bell"></i></a>
-            </div> --><!-- az-header-notification -->
+            
+            <!--<div class="az-header-notification">
+              <button id="capture_face" class="btn btn-info">Iniciar Captura </button>
+            </div>--><!-- az-header-notification -->
 
             <div class="dropdown az-profile-menu">
               <a href="" class="az-img-user"><img src="{% static 'images/avatar_fd.png' %}" alt=""></a>
