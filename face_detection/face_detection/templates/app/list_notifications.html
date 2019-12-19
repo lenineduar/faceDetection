@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+		<div class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title">Notificaciones</h6>
+					<div class="col-lg-12 py-2 bg-white-9">
+			            <nav class="nav az-nav-line flex-column flex-md-row">
+			            	<a class="nav-link active tx-12" data-toggle="tab" href="javascript:void(0)" 
+				              @click="listNotifications(1)">
+				              	Todas
+				            </a>
+			          
+			              	<a class="nav-link tx-12" data-toggle="tab" href="javascript:void(0)" 
+			              	@click="listNotifications(2)">
+			              		Whitelist
+			              	</a>
+				            <a class="nav-link tx-12" data-toggle="tab" href="javascript:void(0)" 
+				              @click="listNotifications(3)">
+				            	Blacklist
+				            </a>
+			            </nav>
+		          	</div><!-- pd-10 -->
+					<div class="table-responsive mg-t-20 pr-1"  v-show="show_all_list">
+						<!-- Show All List -->
+						<table class="table table-striped table-dashboard-two mg-b-0" id="table_all">
+							<thead>
+								<tr>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-10p">Estatus</th>
+									<th class="wd-lg-15p">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+							  {% if notifications %}
+								{% for notification in notifications %}
+								<tr>
+									<td class="font-weight-bold">{{ notification.person_name }}</td>
+									<td class="tx-inverse">
+										{{ notification.created }}
+									</td>
+									<td class="tx-center tx-inverse">
+										{{ notification.camera_description }}
+									</td>
+									<td class="tx-inverse tx-center">
+										{% if notification.is_ready %}
+										    <i class="typcn typcn-input-checked text-success"></i> 
+										    <span class="text-success tx-11 font-weight-bold">Visto</span>
+										{% else %}
+										    <i class="typcn typcn-delete text-danger"></i>
+										    <span class="text-danger tx-11 font-weight-bold">Nuevo</span>
+										{% endif %}
+									</td>
+									<td class="tx-center">
+									    <a class="text-success tx-11" href="javascript:void(0)"
+									        @click="getNotification('{{ notification.pk }}')">
+									    	Ver
+									    </a>
+									     | 
+									    <a class="text-danger tx-11" href="{% url 'del_notification' notification.id %}">Eliminar</a>
+									</td>
+								</tr>
+								{% endfor %}
+							  {% else %}
+							    <tr>
+							    	<td colspan=5 class="text-center">No hay notificaciones</td>
+							    </tr>
+							  {% endif %}
+							</tbody>
+						</table>
+					</div>
+                    
+                    <div class="table-responsive mg-t-20 pr-1" v-show="show_white_list">
+						<!-- Show White List -->
+						<table class="table table-striped table-dashboard-two mg-b-0" 
+						 id="table_whitelist">
+							<thead>
+								<tr>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-15p">Detalles</th>
+									<th class="wd-lg-10p">Estatus</th>
+								</tr>
+							</thead>
+							<tbody>
+							  {% if notifications %}
+								{% for notification in notifications %}
+									{% if notification.get_person.is_white_list %}
+									<tr>
+										<td class="font-weight-bold">{{ notification.person_name }}</td>
+										<td class="tx-right tx-inverse">
+											{{ notification.created }}
+										</td>
+										<td class="tx-center tx-inverse">
+											{{ notification.camera.description }}
+										</td>
+										<td class="tx-center tx-danger">
+										    <a href="javascript:void(0)"
+										        @click="getNotification('{{ notification.pk }}')">
+										    	Ver
+										    </a>
+										</td>
+										<td class="tx-center tx-inverse">
+											{% if notification.is_ready %}
+											    <i class="typcn typcn-input-checked text-success"></i> 
+											    <span class="text-success tx-10 font-weight-bold">Visto</span>
+											{% else %}
+											    <i class="typcn typcn-delete text-danger"></i>
+											    <span class="text-danger tx-10 font-weight-bold">Nuevo</span>
+											{% endif %}
+										</td>
+									</tr>
+									{% endif %}
+								{% endfor %}
+							  {% else %}
+							    <tr>
+							    	<td colspan=5 class="text-center">No hay notificaciones</td>
+							    </tr>
+							  {% endif %}
+							</tbody>
+						</table>
+                    </div>
+
+                    <div class="table-responsive mg-t-20 pr-1" v-show="show_black_list">
+                        <!-- Show Black List -->
+						<table class="table table-striped table-dashboard-two mg-b-0" 
+						 id="table_blacklist">
+							<thead>
+								<tr>
+									<th class="wd-lg-30p">Persona detectada</th>
+									<th class="wd-lg-25p">Fecha</th>
+									<th class="wd-lg-20p">Ubicación</th>
+									<th class="wd-lg-15p">Detalles</th>
+									<th class="wd-lg-10p">Estatus</th>
+								</tr>
+							</thead>
+							<tbody>
+							  {% if notifications %}
+								{% for notification in notifications %}
+									{% if notification.get_person.is_black_list %}
+									<tr>
+										<td class="font-weight-bold">{{ notification.person_name }}</td>
+										<td class="tx-right tx-inverse">
+											{{ notification.created }}
+										</td>
+										<td class="tx-center tx-inverse">
+											{{ notification.camera.description }}
+										</td>
+										<td class="tx-center tx-danger">
+										    <a href="javascript:void(0)"
+										        @click="getNotification('{{ notification.pk }}')">
+										    	Ver
+										    </a>
+										</td>
+										<td class="tx-center tx-inverse">
+											{% if notification.is_ready %}
+											    <i class="typcn typcn-input-checked text-success"></i> 
+											    <span class="text-success tx-10 font-weight-bold">Visto</span>
+											{% else %}
+											    <i class="typcn typcn-delete text-danger"></i>
+											    <span class="text-danger tx-10 font-weight-bold">Nuevo</span>
+											{% endif %}
+										</td>
+									</tr>
+									{% endif %}
+								{% endfor %}
+							  {% else %}
+							    <tr>
+							    	<td colspan=5 class="text-center">No hay notificaciones</td>
+							    </tr>
+							  {% endif %}
+							</tbody>
+						</table>
+					</div>
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">
+			Detalle de Notificación
+		</label>
+		<div v-if="!empty_detalle">
+			<div class="az-media-list-reviews">
+				<div class="media">
+					<div class="media-body">
+						<div class="d-flex justify-content-between mg-b-10">
+							<div>
+								<img v-bind:src='image_capture' alt="" width="100%">
+							</div>
+						</div>
+						<p class="mg-b-0">
+							<table class="table mg-b-0">
+								<tbody>
+									<tr><td>
+										<span class="tx-12">
+											Persona detectada: [[ notification.person_name ]]
+										</span>
+
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									    	Lugar/Cámara: [[ notification.cam_description ]]
+									    </span>
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									        Fecha: [[ notification.created ]]
+									    </span>
+									</td></tr>
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+							<p class="text-center"><a v-bind:href="urlPage(notification.id)" target="_blank">Ver más</a></p>
+						</p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
+		<div v-if="empty_detalle">
+			<div class="az-media-list-reviews">
+				<div class="media text-center">
+					<span class="btn btn-block text-center">No se ha seleccionado alguna notificación</span>
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+    {% include "app/modals/camera_modals.html" %}
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_css %}
+    <link href="{% static 'azia_dashboard/lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_js %}
+ <script src="{% static 'pkg/vue.js' %}"></script>
+ <script src="{% static 'pkg/axios.js' %}"></script>
+ <script src="{% static 'js/list_notifications.js' %}"></script>
+
+ <script src="{% static 'azia_dashboard/lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/select2/js/select2.min.js' %}"></script>
+ <script>
+      $(function(){
+        'use strict'
+
+        $('#table_all').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          },
+          "order": [[ 1, "desc" ]]
+        });
+
+        $('#table_whitelist').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          },
+          "order": [[ 1, "desc" ]]
+        });
+
+        $('#table_blacklist').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          },
+          "order": [[ 1, "desc" ]]
+        });
+        // Select2
+        $('.dataTables_length select').select2({ minimumResultsForSearch: Infinity });
+
+      });
+ </script>
+{% endblock extra_js %}

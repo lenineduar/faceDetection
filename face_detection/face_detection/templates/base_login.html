@@ -1,0 +1,75 @@
+{% load i18n staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130582519-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-130582519-1');
+    </script>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}Login{% endblock %}</title>
+
+    <!-- vendor css -->
+    <link href="{% static 'azia_dashboard/lib/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/typicons.font/typicons.css' %}" rel="stylesheet">
+
+    {% block extra_css %}{% endblock extra_css %}
+
+    <!-- azia CSS -->
+    <link rel="stylesheet" href="{% static 'azia_dashboard/css/azia.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/login_admin.css" %}" />
+    <style>
+    .az-logo img {
+      width: 180px;
+      height: auto;
+      margin-top: 20px;
+    }
+    .az-card-signin {
+      height: 510px;
+    }
+    .logo-circle-signup img {
+      width: 80px;
+      height: auto;
+    }
+    .az-column-signup-left {
+      background-image: url('{% static "img/hero-merchants.jpg" %}')
+    }
+    .errorlist{
+      list-style:none;
+      color: #dc3545 !important;
+      font-size: 0.8em;
+      padding-left: 0px
+    }
+    </style>
+  </head>
+  <body class="az-body">
+    {% block content %}
+          
+    {% endblock content %}
+  </div><!-- az-signin-wrapper -->
+
+    <script src="{% static 'azia_dashboard/lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'azia_dashboard/lib/ionicons/ionicons.js' %}"></script>
+
+    <script src="{% static 'azia_dashboard/js/azia.js' %}"></script>
+    <script>
+      $(function(){
+        'use strict'
+
+      });
+    </script>
+    {% block extra_js%}{% endblock extra_js %}
+  </body>
+</html>

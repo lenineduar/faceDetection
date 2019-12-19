@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+		<div class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title mg-b-20">Captura</h6>
+					<br/>
+					<p class="text-center">
+						{% if not object.image_capture%}
+							<img src="https://via.placeholder.com/500" alt="" width="60%">
+						{%  else %}
+						    <img src="data:image/png;base64,{{object.image_capture}}" alt="" width="60%">
+						{% endif %}	
+					</p>
+					<a class="btn btn-info btn-block" href="{% url 'add_img_edit' object.id %}">Agregar imagen</a>
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">
+			Información Básica
+		</label>
+		<div>
+			<div class="az-media-list-reviews">
+				<div class="media">
+					<div class="media-body">
+						<p class="mg-b-0">
+							<table class="table mg-b-0">
+								<tbody>
+									<tr><td>
+										<span class="tx-12">
+											Persona detectada: {{ object.person_name }}
+										</span>
+
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									    	Lugar/Cámara: {{ object.camera_description }}
+									    </span>
+									</td></tr>
+									<tr><td>
+									    <span class="tx-12">
+									        Fecha: {{ object.created }}
+									    </span>
+									</td></tr>
+									{% if object.get_person.is_person %}
+								    <tr><td>
+								      <div class="row">
+										<div class="col-6">
+										    {% if object.get_person.is_white_list %}
+										        <i class="typcn typcn-input-checked text-success"></i>
+										    {% else %}
+										        <i class="typcn typcn-delete text-danger"></i>
+										    {% endif %}
+										    Whitelist
+										</div>
+										<div class="col-6">
+										    {% if object.get_person.is_black_list %}
+										        <i class="typcn typcn-input-checked text-success"></i>
+										    {% else %}
+										        <i class="typcn typcn-delete text-danger"></i>
+										    {% endif %}
+										    Blacklist
+										</div>
+									  </div>
+									</td></tr>
+									{% endif %}
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+						</p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+			<a href="{% url 'edit_notification' object.id %}" class="btn btn-outline-light btn-block">Editar</a>
+			<a href="{% url 'del_notification' object.id %}" class="btn btn-danger btn-block">Eliminar</a>
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+</div><!-- az-content-body -->
+{% endblock content %}

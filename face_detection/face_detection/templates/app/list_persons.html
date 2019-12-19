@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="app" class="az-content-body">
+	<div class="az-content-body-left">
+		<div class="row row-sm mg-b-20">
+			<div class="col-lg-12">
+				<div class="card card-table-two">
+					<h6 class="card-title">Listado de personas</h6>
+					<div class="table-responsive mg-t-20 pr-1">
+						<!-- Show All List -->
+						<table class="table table-striped table-dashboard-two mg-b-0" id="table_person">
+							<thead>
+								<tr>
+									<th class="wd-lg-40p">Persona</th>
+									<th class="wd-lg-20p">Creado</th>
+									<th class="wd-lg-15p">Whitelist</th>
+									<th class="wd-lg-15p">Blacklist</th>
+									<th class="wd-lg-10p">Editar</th>
+								</tr>
+							</thead>
+							<tbody>
+							  {% if persons %}
+								{% for person in persons %}
+								<tr>
+									<td>{{ person.fullname }}</td>
+									<td class="tx-right tx-inverse font-weight-bold">
+										{{ person.created }}
+									</td>
+									<td class="tx-right tx-inverse">
+										{% if person.is_white_list %}
+										    <i class="typcn typcn-input-checked text-success"></i> 
+										{% else %}
+										    <i class="typcn typcn-delete text-danger"></i>
+										{% endif %}
+										<span class="text-success tx-10 font-weight-bold"> whitelist</span>
+									</td>
+									<td class="tx-right tx-inverse">
+										{% if person.is_black_list %}
+										    <i class="typcn typcn-input-checked text-success"></i> 
+										{% else %}
+										    <i class="typcn typcn-delete text-danger"></i>
+										{% endif %}
+										<span class="text-success tx-10 font-weight-bold"> blacklist</span>
+									</td>
+									<td class="tx-right tx-danger">
+										<a href="javascript:void(0)"  
+										    @click="getPerson('{{ person.pk }}')">
+										    <i class="typcn typcn-edit text-success"></i> 
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							  {% else %}
+							    <tr>
+							    	<td colspan=5 class="text-center">No hay personas registradas</td>
+							    </tr>
+							  {% endif %}
+							</tbody>
+						</table>
+					</div><!-- table-responsive -->
+				</div><!-- card-dashboard-five -->
+			</div><!-- col -->
+		</div><!-- row -->
+		<!-- END GRID 1 -->
+	</div>
+
+	<!-- NOTIFICATIONS -->
+	<div class="az-content-body-right">
+		<label class="az-content-label tx-base mg-b-25">
+			Editar Usuario
+		</label>
+		<div v-if="!empty_person">
+			<div class="az-media-list-reviews">
+				<div class="media">
+					<div class="media-body">
+						<p class="mg-b-0">
+							<table class="table mg-b-0">
+								<tbody>
+									<tr><td>
+									  <form v-bind:action="url_form" method="POST">
+									    {% csrf_token %}	
+										<div class="tx-12 pb-3">
+											<strong>Persona:</strong>
+											<input class="form-control" placeholder="Input box" type="text" v-model="person.fullname" name="person_name"
+											id="person_name" required>
+											<span v-show="error_empty_name">Este campo es requerido</span>
+										</div>
+									    <div class="tx-12 pb-3">
+											<strong>Lista Blanca / Lista Negra:</strong>
+											<div class="row pt-1">
+												<div class="col-6 tx-12">
+													<label class="ckbox">
+										                <input type="checkbox" 
+										                  v-model="person.is_white_list" name="whitelist"
+										                ><span>Whitelist</span>
+										            </label>
+										        </div>
+										        <div class="col-6 tx-12">
+										            <label class="ckbox">
+										                <input type="checkbox" 
+										                  v-model="person.is_black_list" name="blacklist"
+										                ><span>Blacklist</span>
+										            </label>
+												</div>
+										    </div>
+									    </div>
+									    <button type="submit" class="btn btn-outline-light btn-block">
+											Guardar Cambios
+									    </button>
+									  </form>
+									</td></tr>
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+						</p>
+					</div><!-- media-body -->
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
+		<div v-if="empty_person">
+			<div class="az-media-list-reviews">
+				<div class="media text-center">
+					<span class="btn btn-block text-center">No se ha seleccionado alguna persona para editar</span>
+				</div><!-- media -->
+			</div><!-- media-list -->
+		</div>
+	</div>
+    <!-- END NOTIFICATIONS -->
+    {% include "app/modals/camera_modals.html" %}
+</div><!-- az-content-body -->
+{% endblock content %}
+
+{% block extra_css %}
+    <link href="{% static 'azia_dashboard/lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_js %}
+ <script src="{% static 'pkg/vue.js' %}"></script>
+ <script src="{% static 'pkg/axios.js' %}"></script>
+ <script src="{% static 'js/list_persons.js' %}"></script>
+
+ <script src="{% static 'azia_dashboard/lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/lib/select2/js/select2.min.js' %}"></script>
+ <script>
+      $(function(){
+        'use strict'
+
+        $('#table_person').DataTable({
+          language: {
+            searchPlaceholder: 'Buscar...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/pag',
+          }
+        });
+        // Select2
+        $('.dataTables_length select').select2({ minimumResultsForSearch: Infinity });
+
+      });
+ </script>
+{% endblock extra_js %}
