@@ -133,8 +133,8 @@
 {% endblock content %}
 
 {% block extra_css %}
-    <link href="{% static 'azia_dashboard/lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
-    <link href="{% static 'azia_dashboard/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/extern/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'azia_dashboard/extern/select2/css/select2.min.css' %}" rel="stylesheet">
 {% endblock extra_css %}
 
 {% block extra_js %}
@@ -142,9 +142,9 @@
  <script src="{% static 'pkg/axios.js' %}"></script>
  <script src="{% static 'js/list_persons.js' %}"></script>
 
- <script src="{% static 'azia_dashboard/lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>
- <script src="{% static 'azia_dashboard/lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
- <script src="{% static 'azia_dashboard/lib/select2/js/select2.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/extern/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/extern/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
+ <script src="{% static 'azia_dashboard/extern/select2/js/select2.min.js' %}"></script>
  <script>
       $(function(){
         'use strict'

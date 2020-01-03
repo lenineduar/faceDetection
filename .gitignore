@@ -68,24 +68,8 @@ tests/.hitch
 
 # Ignore enviroment credentials
 config/settings/.env
-
-.vagrant/
-src/cryptobuyer/static/build/*
-src/cryptobuyer/media/*
 src/staticfiles/
 
 src/celerybeat-schedule
 tags
 .vscode/
-
-# Prometheus and Grafana
-prometheus
-grafana-2.5.0
-grafana-5.4.0
-metabase.db.mv.db
-metabase.db.trace.db
-metabase.jar
-
-Vagrantfile
-ansible/playbook.retry
-celerybeat-schedule.db
