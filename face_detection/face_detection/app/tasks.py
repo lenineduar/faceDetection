@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from face_detection.app.utils import EMail
 from face_detection.app.models import Cameras, Notifications
+from threading import Thread
 
 
 def set_notifications(name, camara_id, image):
@@ -32,6 +33,9 @@ def set_notifications(name, camara_id, image):
                 image_capture=image
             )
             new_notification.save()
+            send = Thread(target=send_mail_notification, args=(new_notification,))
+            send.start()
+            #send_mail_notification(new_notification)
     else:
         new_notification = Notifications(
             person_name = name,
@@ -39,8 +43,9 @@ def set_notifications(name, camara_id, image):
             image_capture=image
         )
         new_notification.save()
-
-    #send_mail_notification(new_notification)
+        send = Thread(target=send_mail_notification, args=(new_notification,))
+        send.start()
+        #send_mail_notification(new_notification)
 
     return None
 
@@ -54,18 +59,15 @@ def send_mail_notification(notification):
         # Send the Email
         email = EMail(
             to=settings.EMAIL_NOTIFY_DETECTION,
-            subject="Nueva Detección",
+            subject=f"Nueva Detección - Persona: {notification.person_name}",
         )
 
         email.text('app/emails/nueva_deteccion.txt', ctx)
         email.html('app/emails/nueva_deteccion.html', ctx)
         email.send()
-
+        print("Se envió")
     except Exception as e:
         print("No se envió")
-        import pdb; pdb.set_trace()
         pass
-
-    print("Se envió")
 
     return None

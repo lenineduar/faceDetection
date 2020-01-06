@@ -1,30 +1,58 @@
 #*************************Librerias**************************
 from cv2 import cv2
-from threading import Thread
+from threading import Thread, Lock
 import numpy as np
 import time
+import base64
 import face_recognition
 import dlib
 import os
 from utils.deteccion_gpu import clasificador
 from django.conf import settings
+from face_detection.app.models import Cameras
+from face_detection.app.tasks import set_notifications
 #************************************************************
 
 class VideoStreamWidget(object):
     def __init__(self, src=0):
-        self.capture = cv2.VideoCapture(src)
-        # Start the thread to read frames from the video stream
+        self.stream = cv2.VideoCapture(src)
+        (self.grabbed, self.frame) = self.stream.read()
+        self.started = False
+        self.read_lock = Lock()
+        self.start()
+        
+    def start(self):
+        if self.started:
+            print("already started!!")
+            return None
+        self.started = True
         self.thread = Thread(target=self.update, args=())
-        self.thread.daemon = True
         self.thread.start()
-        self.dir_face = os.path.join(settings.MEDIA_ROOT, 'att_faces/orl_faces/')
+        return self
 
     def update(self):
-        # Lee um frame diferente en un hilo diferente
-        while True:
-            if self.capture.isOpened():
-                (self.status, self.frame) = self.capture.read()
-            time.sleep(.01)
+        while self.started:
+            (grabbed, frame) = self.stream.read()
+            self.read_lock.acquire()
+            self.grabbed, self.frame = grabbed, frame
+            self.read_lock.release()
+
+    def read(self):
+        self.read_lock.acquire()
+        frame = self.frame.copy()
+        self.read_lock.release()
+        return frame
+
+    def stop(self):
+        self.started = False
+        self.thread.join()
+        self.stream.release()
+
+    def __del__(self):
+        self.stop()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.stream.stop()
     
     def get_aligned_face(self,img, left, right):
         desired_w = 256
@@ -126,7 +154,7 @@ class VideoStreamWidget(object):
         
         return LEFT_EYE_CENTER, RIGHT_EYE_CENTER
     
-    def show_frame(self):
+    def show_frame(self, camera_id):
         frame = self.frame
         gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         mini = cv2.resize(frame, (int(frame.shape[1] / size), int(frame.shape[0] / size)))
@@ -142,7 +170,7 @@ class VideoStreamWidget(object):
             tolerancia=0.6
             matches = face_recognition.compare_faces(codificacion, face_encoding,tolerancia)
 
-            name = "No id"
+            name = "Desconocido"
 
             # Si se encontró una coincidencia en solo use la primera..
             if True in matches:
@@ -155,6 +183,11 @@ class VideoStreamWidget(object):
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = nombres[best_match_index]
+
+            retval, buffer = cv2.imencode('.png', frame)
+            png_as_text = base64.b64encode(buffer).decode('ascii')
+            set_notifications(name, camera_id, png_as_text)
+
 
             # Dibuja un rectangulo alrededor del rostro
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
@@ -192,7 +225,7 @@ class VideoStreamWidget(object):
 
 
         # Muestra imagen en pantalla
-        cv2.imshow('Reconocimiento facial',frame)
+        #cv2.imshow('Reconocimiento facial',frame)
 
         # Hit 'q' on the keyboard to quit!
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -201,7 +234,17 @@ class VideoStreamWidget(object):
 
 #***************************************************************
 def run():
-    video= VideoStreamWidget()
+    # Obtengo de la base de datos las cámaras detectadas y activas
+    cameras = list()
+    cameradb = Cameras.objects.filter(is_active=True)
+    # Exploro cada una de las cámaras y creo el hilo para el stream de la cámara
+    for camera in cameradb:
+        cap = {
+            'src': VideoStreamWidget(camera.src),
+            'camera_id': camera.id,
+        }
+        cameras.append(cap)
+
     global size, codificacion, nombres, detector, predictor
     size=4
     predictor_path = os.path.join(settings.APPS_DIR, 'fixtures/plantilla_facial.dat')
@@ -215,6 +258,7 @@ def run():
     print('Fin entrenamiento')
     while True:
         try:
-           video.show_frame()
+           for cap in cameras:
+               cap["src"].show_frame(cap["camera_id"])
         except AttributeError:
             pass

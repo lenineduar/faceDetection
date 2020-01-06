@@ -179,12 +179,10 @@ class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
         imgdata = base64.b64decode(img[23:])
         image = Image.open(io.BytesIO(imgdata))
         frame = numpy.array(image)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        face_resize = cv2.resize(gray, (img_width, img_height))
         pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
             if n[0]!='.' ]+[0])[-1] + 1
 
-        cv2.imwrite('%s/%s.jpg' % (path, pin), face_resize)
+        cv2.imwrite('%s/%s_%s.jpg' % (path, person_name, pin), frame)
     
         return redirect("dashboard")
 

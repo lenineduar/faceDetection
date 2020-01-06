@@ -1,4 +1,4 @@
 {% load i18n %}
 Hola {{ admin }},
 
-Se ha detectado ha {{ notification.person_name }}, por {{ notification.description }}. Fecha: {{ notification.created }}
+Se ha detectado ha {{ notification.person_name }}, por {{ notification.camera_description }}. Fecha: {{ notification.created }}
