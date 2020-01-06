@@ -5,6 +5,7 @@ import sys
 import base64
 import pickle
 import json
+import time
 import mimetypes
 from django.views.decorators import gzip
 from django.shortcuts import render, redirect
@@ -130,12 +131,12 @@ def get_capture_frame():
     global person_name
     global path
     #Tamaño para reducir a miniaturas las fotografias
-    size = 4
+    size = 2
     img_width, img_height = 112, 92
     #cargamos la plantilla e inicializamos la webcam
     xml_file = os.path.join(settings.APPS_DIR, 'fixtures/haarcascade_frontalface_default.xml')
     face_cascade = cv2.CascadeClassifier(xml_file)
-    while count < 100:
+    while count < 1:
         #leemos un frame y lo guardamos
         img = cap.read()
         #img = cv2.flip(img, 1, 0)
@@ -156,20 +157,26 @@ def get_capture_frame():
             (x, y, w, h) = [v * size for v in face_i]
             face = gray[y:y + h, x:x + w]
             face_resize = cv2.resize(face, (img_width, img_height))
+            img_resize = cv2.resize(img, (int(img.shape[1] / size), int(img.shape[0] / size)))
 
             #Dibujamos un rectangulo en las coordenadas del rostro
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            #cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 3)
             #Ponemos el nombre en el rectagulo
-            cv2.putText(img, person_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))        
+            #cv2.putText(img, person_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))        
 
             #El nombre de cada foto es el numero del ciclo
             #Obtenemos el nombre de la foto
             #Despues de la ultima sumamos 1 para continuar con los demas nombres
-            pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
-                if n[0]!='.' ]+[0])[-1] + 1
+            pin = 1
+            for number in os.listdir(path):
+                idx = number.find('.')
+                pin = int(number[(idx-1)]) + 1
+            
+            #pin=sorted([int(n[:n.split("_")[1].find('.')]) for n in os.listdir(path)
+            #    if n[0]!='.' ]+[0])[-1] + 1
 
             #Metemos la foto en el directorio
-            cv2.imwrite('%s/%s.png' % (path, pin), face_resize)
+            cv2.imwrite('%s/%s_%s.png' % (path, person_name, pin), img_resize)
 
             #Contador del ciclo
             count += 1
@@ -178,7 +185,6 @@ def get_capture_frame():
         #Mostramos la imagen
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + convert + b'\r\n')
-
     cap.stop()
     image_path = os.path.join(
         settings.ROOT_DIR,

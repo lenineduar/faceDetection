@@ -179,8 +179,10 @@ class AddImageToRecognitionView(LoginRequiredMixin, DetailView):
         imgdata = base64.b64decode(img[23:])
         image = Image.open(io.BytesIO(imgdata))
         frame = numpy.array(image)
-        pin=sorted([int(n[:n.find('.')]) for n in os.listdir(path)
-            if n[0]!='.' ]+[0])[-1] + 1
+        pin = 1
+        for number in os.listdir(path):
+            idx = number.find('.')
+            pin = int(number[(idx-1)]) + 1
 
         cv2.imwrite('%s/%s_%s.jpg' % (path, person_name, pin), frame)
     
