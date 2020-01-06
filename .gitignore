@@ -57,9 +57,6 @@ node_modules/
 .venv
 env/
 
-# User-uploaded media
-coincox/media/
-
 # Hitch directory
 tests/.hitch
 
